@@ -32,6 +32,13 @@ public class MrLogger {
     }
 
     /**
+     * Set to true if should log else false.
+     */
+    public void setLogEnabled(boolean isLogEnabled) {
+        mLoggingEnabled = isLogEnabled;
+    }
+
+    /**
      * Show Debug Log only if Logging is enabled.
      */
     public void debug(String text) {
@@ -77,5 +84,35 @@ public class MrLogger {
      */
     public static void error(String tag, String text) {
         Log.e(tag, text);
+    }
+
+    /**
+     * Show Debug Log based on shouldLog.
+     */
+    public static void debug(String tag, String text, boolean shouldLog) {
+
+        if (shouldLog) {
+            debug(tag, text);
+        }
+    }
+
+    /**
+     * Show Info in Logs based on shouldLog.
+     */
+    public static void info(String tag, String text, boolean shouldLog) {
+
+        if (shouldLog) {
+            info(tag, text);
+        }
+    }
+
+    /**
+     * Show Error in Logs based on shouldLog.
+     */
+    public static void error(String tag, String text, boolean shouldLog) {
+
+        if (shouldLog) {
+            error(tag, text);
+        }
     }
 }
