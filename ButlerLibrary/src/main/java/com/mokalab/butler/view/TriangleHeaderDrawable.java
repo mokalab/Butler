@@ -59,7 +59,7 @@ public class TriangleHeaderDrawable extends Drawable {
 
         p.setColor(color);
         p.setAntiAlias(true);
-        Path path = getTrinagleHeader();
+        Path path = getTriangleHeader();
         canvas.drawPath(path, p);
     }
 
@@ -79,7 +79,7 @@ public class TriangleHeaderDrawable extends Drawable {
         return 0;
     }
 
-    private Path getTrinagleHeader() {
+    private Path getTriangleHeader() {
 
         Point startPoint, p2, p3, p4, p5, p6, p7;
         Rect bounds = getBounds();
@@ -93,8 +93,8 @@ public class TriangleHeaderDrawable extends Drawable {
         p5 = new Point( (int) topRightTriangle, bounds.top);
         double bottomTriangle = bounds.left + width* TRIANGLE_LOCATION;
         p6 = new Point((int) bottomTriangle, bounds.bottom);
-        double topleftTriangle = bounds.left + width* TRIANGLE_LOCATION - height;
-        p7 = new Point((int) topleftTriangle, bounds.top);
+        double topLeftTriangle = bounds.left + width* TRIANGLE_LOCATION - height;
+        p7 = new Point((int) topLeftTriangle, bounds.top);
 
         Path path = new Path();
         path.moveTo(startPoint.x, startPoint.y);

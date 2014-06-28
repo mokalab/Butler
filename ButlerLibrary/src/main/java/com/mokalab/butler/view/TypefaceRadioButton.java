@@ -4,10 +4,11 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.RadioButton;
 
-import ca.bellmedia.bnngo.fonts.TypefaceHelper;
 
 /**
- * Created by David Fernandez on 2014-04-25.
+ * RadioButton View with the ability to work with custom fonts.
+ * @see {@link com.mokalab.butler.view.TypefaceHelper}
+ * @author davidf
  */
 public class TypefaceRadioButton extends RadioButton {
 

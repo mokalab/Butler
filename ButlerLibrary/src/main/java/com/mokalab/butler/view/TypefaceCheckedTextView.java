@@ -4,30 +4,35 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.CheckedTextView;
 
-import ca.bellmedia.bnngo.fonts.TypefaceHelper;
+import static com.mokalab.butler.view.TypefaceHelper.*;
+
 
 /**
- * Created by David Fernandez on 2014-04-25.
+ * Button View with the ability to work with custom fonts.
+ * @see {@link com.mokalab.butler.view.TypefaceHelper}
+ * @author davidf
  */
 public class TypefaceCheckedTextView extends CheckedTextView {
 
     private String mTypeFaceName;
 
     public TypefaceCheckedTextView(Context context) {
-
         super(context);
     }
 
-
     public TypefaceCheckedTextView(Context context, AttributeSet attrs) {
-
-        super(context, attrs);
-        TypefaceHelper.manageAttributes(this, attrs);
+        super(context, attrs, 0);
     }
+
+    public TypefaceCheckedTextView(final Context context, final AttributeSet attrs, final int defStyle) {
+        super(context, attrs, defStyle);
+        manageAttributes(this, attrs);
+    }
+
 
     public boolean setTypeFaceName(String typeFaceName) {
 
-        if (TypefaceHelper.setTypeFace(this, mTypeFaceName)) {
+        if (setTypeFace(this, mTypeFaceName)) {
             mTypeFaceName = typeFaceName;
             return true;
         } else {
