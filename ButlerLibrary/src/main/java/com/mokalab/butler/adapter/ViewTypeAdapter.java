@@ -40,7 +40,8 @@ import java.util.List;
  * <p/>
  * <br></br><br></br>
  * <p/>
- * Created by pirdad on 12/15/2013.
+ *
+ * @author pirdad
  */
 public abstract class ViewTypeAdapter extends BaseAdapter {
 
@@ -67,7 +68,7 @@ public abstract class ViewTypeAdapter extends BaseAdapter {
     public ViewTypeAdapter(Context context, final ArrayList dataList) {
 
         this(context);
-        this.mDataList = dataList;
+        mDataList = dataList;
     }
 
     /**
@@ -84,7 +85,7 @@ public abstract class ViewTypeAdapter extends BaseAdapter {
      */
     public void setDataList(final List dataList) {
 
-        this.mDataList = dataList;
+        mDataList = dataList;
     }
 
     /**
@@ -92,7 +93,7 @@ public abstract class ViewTypeAdapter extends BaseAdapter {
      */
     public List getDataList() {
 
-        return this.mDataList;
+        return mDataList;
     }
 
     /**

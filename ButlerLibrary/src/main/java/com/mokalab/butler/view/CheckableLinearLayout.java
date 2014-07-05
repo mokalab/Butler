@@ -22,6 +22,10 @@ import android.view.View;
 import android.widget.Checkable;
 import android.widget.LinearLayout;
 
+/**
+ * CheckableLinearLayout is a LinearLayout that implements Checkable.
+ * <br> It is very useful if we are hosting a {@link android.widget.CheckedTextView} and we want to pass the state to the children.
+ */
 public class CheckableLinearLayout extends LinearLayout implements Checkable {
 
     /**

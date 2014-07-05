@@ -5,7 +5,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * Created by work on 2014-06-13.
+ * TODO: It is recommended to return always empty instead of null.
  */
 public class JsonUtils {
 

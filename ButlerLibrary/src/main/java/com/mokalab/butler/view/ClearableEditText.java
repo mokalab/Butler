@@ -18,8 +18,6 @@ package com.mokalab.butler.view;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,22 +31,36 @@ import android.widget.EditText;
  * <pre>
  * android:drawableRight="@drawable/custom_icon"
  * </pre>
+ * @author davidf (refactored and improved)
  */
 public class ClearableEditText extends EditText implements OnTouchListener, OnFocusChangeListener {
+    /**
+     * Interface to get the event when the {@link com.mokalab.butler.view.ClearableEditText} it is clear.
+     */
+    public interface IOnClearTextListener {
+        void onClearText();
+    }
 
-    private Drawable xD;
+    private static final int COMPOUND_DRAWABLE_LEFT = 0;
+    private static final int COMPOUND_DRAWABLE_TOP = 1;
+    private static final int COMPOUND_DRAWABLE_RIGHT = 2;
+    private static final int COMPOUND_DRAWABLE_BOTTOM = 3;
 
-    private Listener listener;
+    private Drawable mDrawable;
+
+    /**
+     * Listeners.
+     */
+    private IOnClearTextListener mClearTextListener;
+    private OnTouchListener mOnTouchListener;
+    private OnFocusChangeListener mFocusChangeListener;
+
     public ClearableEditText(Context context) {
-
-        super(context);
-        init();
+        super(context, null);
     }
 
     public ClearableEditText(Context context, AttributeSet attrs) {
-
-        super(context, attrs);
-        init();
+        super(context, attrs, 0);
     }
 
     public ClearableEditText(Context context, AttributeSet attrs, int defStyle) {
@@ -57,45 +69,39 @@ public class ClearableEditText extends EditText implements OnTouchListener, OnFo
         init();
     }
 
-    public interface Listener {
-        void didClearText();
+    @Override
+    public void setOnTouchListener(OnTouchListener listener) {
+        mOnTouchListener = listener;
+    }
+
+    public void setClearTextListener(IOnClearTextListener clearTextListener) {
+        mClearTextListener = clearTextListener;
     }
 
     @Override
-    public void setOnTouchListener(OnTouchListener l) {
-        this.l = l;
+    public void setOnFocusChangeListener(OnFocusChangeListener listener) {
+        mFocusChangeListener = listener;
     }
 
-    public void setListener(Listener listener) {
-        this.listener = listener;
-    }
-
-    @Override
-    public void setOnFocusChangeListener(OnFocusChangeListener f) {
-        this.f = f;
-    }
-
-    private OnTouchListener l;
-    private OnFocusChangeListener f;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        if (getCompoundDrawables()[2] != null) {
-            boolean tappedX = event.getX() > (getWidth() - getPaddingRight() - xD
+        if (getCompoundDrawables()[COMPOUND_DRAWABLE_RIGHT] != null) {
+            boolean tappedX = event.getX() > (getWidth() - getPaddingRight() - mDrawable
                     .getIntrinsicWidth());
             if (tappedX) {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
-                    setText("");
-                    if (listener != null) {
-                        listener.didClearText();
+                    setText(null);
+                    if (mClearTextListener != null) {
+                        mClearTextListener.onClearText();
                     }
                 }
                 return true;
             }
         }
-        if (l != null) {
-            return l.onTouch(v, event);
+        if (mOnTouchListener != null) {
+            return mOnTouchListener.onTouch(v, event);
         }
         return false;
     }
@@ -108,8 +114,8 @@ public class ClearableEditText extends EditText implements OnTouchListener, OnFo
         } else {
             setClearIconVisible(false);
         }
-        if (f != null) {
-            f.onFocusChange(v, hasFocus);
+        if (mFocusChangeListener != null) {
+            mFocusChangeListener.onFocusChange(v, hasFocus);
         }
     }
 
@@ -124,15 +130,14 @@ public class ClearableEditText extends EditText implements OnTouchListener, OnFo
 
     private void init() {
 
-        xD = getCompoundDrawables()[2];
-        if (xD == null) {
-            xD = getResources().getDrawable(getDefaultClearIconId());
+        mDrawable = getCompoundDrawables()[COMPOUND_DRAWABLE_RIGHT];
+        if (mDrawable == null) {
+            mDrawable = getResources().getDrawable(getDefaultClearIconId());
         }
-        xD.setBounds(0, 0, xD.getIntrinsicWidth(), xD.getIntrinsicHeight());
+        mDrawable.setBounds(0, 0, mDrawable.getIntrinsicWidth(), mDrawable.getIntrinsicHeight());
         setClearIconVisible(false);
-        super.setOnTouchListener(this);
-        super.setOnFocusChangeListener(this);
-        //addTextChangedListener(this);
+        setOnTouchListener(this);
+        setOnFocusChangeListener(this);
     }
 
     private int getDefaultClearIconId() {
@@ -145,10 +150,14 @@ public class ClearableEditText extends EditText implements OnTouchListener, OnFo
         return id;
     }
 
+    /**
+     * It sets the visibility of the ClearIcon
+     * @param visible true to visible otherwise false.
+     */
     protected void setClearIconVisible(boolean visible) {
 
-        Drawable x = visible ? xD : null;
-        setCompoundDrawables(getCompoundDrawables()[0],
-                getCompoundDrawables()[1], x, getCompoundDrawables()[3]);
+        Drawable x = visible ? mDrawable : null;
+        setCompoundDrawables(getCompoundDrawables()[COMPOUND_DRAWABLE_LEFT],
+                getCompoundDrawables()[COMPOUND_DRAWABLE_TOP], x, getCompoundDrawables()[COMPOUND_DRAWABLE_BOTTOM]);
     }
 }

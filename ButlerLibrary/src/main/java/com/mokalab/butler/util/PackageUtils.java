@@ -3,9 +3,7 @@ package com.mokalab.butler.util;
 import android.content.Context;
 import android.content.pm.PackageManager;
 
-/**
- * Created by work on 2014-06-13.
- */
+
 public class PackageUtils {
 
     /**
