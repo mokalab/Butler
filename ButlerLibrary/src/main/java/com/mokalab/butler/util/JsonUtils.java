@@ -4,9 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * TODO: It is recommended to return always empty instead of null.
- */
 public class JsonUtils {
 
     /**
