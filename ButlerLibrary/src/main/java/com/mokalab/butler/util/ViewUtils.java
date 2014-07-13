@@ -5,9 +5,6 @@ import android.content.res.Resources;
 import android.util.TypedValue;
 import android.view.View;
 
-/**
- * Created by work on 2014-06-13.
- */
 public class ViewUtils {
 
     /**

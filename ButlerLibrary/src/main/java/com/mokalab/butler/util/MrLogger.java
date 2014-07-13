@@ -13,7 +13,7 @@ import android.util.Log;
  *          MrLogger logger = new MrLogger("tag", true);<br>
  *          logger.debug("your cool");<br>
  *          </code><br>
- * Created by Pirdad on 2014-05-22.
+ * @author pirdad
  */
 public class MrLogger {
 

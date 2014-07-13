@@ -4,9 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by work on 2014-06-13.
- */
 public class JsonUtils {
 
     /**
