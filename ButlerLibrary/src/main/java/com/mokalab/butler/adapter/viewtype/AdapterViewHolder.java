@@ -1,4 +1,4 @@
-package com.mokalab.butler.adapter;
+package com.mokalab.butler.adapter.viewtype;
 
 import android.content.Context;
 import android.view.View;

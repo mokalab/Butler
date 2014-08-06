@@ -1,4 +1,4 @@
-package com.mokalab.butler.adapter;
+package com.mokalab.butler.adapter.viewtype;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -35,7 +35,7 @@ import java.util.List;
  * <p/>
  * This is the special method that takes care of the view holder pattern. The logic will be a lot like {@link #getItemViewType(int)}
  * to check for which row what view holder object you want to use. create all you view holder objects inside your extended
- * adapter and extend them from {@link com.mokalab.butler.adapter.AdapterViewHolder} and pass the associated
+ * adapter and extend them from {@link AdapterViewHolder} and pass the associated
  * data type as T.
  * <p/>
  * <br></br><br></br>

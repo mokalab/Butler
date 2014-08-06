@@ -4,6 +4,10 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 /**
  * FragmentUtils helpers related to the {@link android.app.Fragment}
@@ -14,6 +18,8 @@ public class FragmentUtils {
 
     private FragmentUtils(){}
 
+
+    protected static final String FRAGMENT_CANT_BE_CASTED_TO_TYPE = "The found Fragment can't be casted to the specified type.";
 
     /**
      * It checks if the fragment is visible by it's tag.
@@ -95,6 +101,159 @@ public class FragmentUtils {
             }
         }
         return null;
+    }
+
+    /**
+     * Finds Fragment by Tag from a Fragment Manager.
+     * If the specified type does not match the found fragment type, it'll throw
+     * {@link java.lang.IllegalArgumentException}.
+     */
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static <T extends android.support.v4.app.Fragment> T findFragmentByTag(@NotNull android.support.v4.app.FragmentManager fragmentManager,
+                                                               @NotNull String fragmentTag,
+                                                               @NotNull Class<T> returnType) {
+
+        android.support.v4.app.Fragment fragment = fragmentManager.findFragmentByTag(fragmentTag);
+
+        if (fragment == null) return null;
+
+        if (returnType.isAssignableFrom(fragment.getClass())) {
+
+            return (T) fragment;
+
+        } else {
+
+            String exceptionMessage = FRAGMENT_CANT_BE_CASTED_TO_TYPE + " " +
+                    "Specified Type: " + returnType.getSimpleName()+ ". " +
+                    "Found Type: " + fragment.getClass().getSimpleName() + ".";
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull android.support.v4.app.FragmentManager fragmentManager, int containerResId,
+                                       @NotNull android.support.v4.app.Fragment fragment) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, null);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull android.support.v4.app.FragmentManager fragmentManager, int containerResId,
+                                       @NotNull android.support.v4.app.Fragment fragment, @Nullable String fragmentTag) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, false);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull android.support.v4.app.FragmentManager fragmentManager, int containerResId,
+                                       @NotNull android.support.v4.app.Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, addToBackStack, null);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull android.support.v4.app.FragmentManager fragmentManager, int containerResId,
+                                       @NotNull android.support.v4.app.Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack,
+                                       @Nullable String backStackName) {
+
+        android.support.v4.app.FragmentTransaction tr = fragmentManager.beginTransaction();
+
+        if (fragmentTag == null) {
+            tr.replace(containerResId, fragment);
+        } else {
+            tr.replace(containerResId, fragment, fragmentTag);
+        }
+
+        if (addToBackStack) {
+            tr.addToBackStack(backStackName);
+        }
+
+        tr.commit();
+    }
+
+    /**
+     * Finds Fragment by Tag from a Fragment Manager.
+     * If the specified type does not match the found fragment type, it'll throw
+     * {@link java.lang.IllegalArgumentException}.
+     */
+    @Nullable
+    @SuppressWarnings("unchecked")
+    public static <T extends Fragment> T findFragmentByTag(@NotNull FragmentManager fragmentManager, @NotNull String fragmentTag,
+                                                                                  @NotNull Class<T> returnType) {
+
+        Fragment fragment = fragmentManager.findFragmentByTag(fragmentTag);
+
+        if (fragment == null) return null;
+
+        if (returnType.isAssignableFrom(fragment.getClass())) {
+
+            return (T) fragment;
+
+        } else {
+
+            String exceptionMessage = FRAGMENT_CANT_BE_CASTED_TO_TYPE + " " +
+                    "Specified Type: " + returnType.getSimpleName()+ ". " +
+                    "Found Type: " + fragment.getClass().getSimpleName() + ".";
+            throw new IllegalArgumentException(exceptionMessage);
+        }
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull FragmentManager fragmentManager, int containerResId,
+                                       @NotNull Fragment fragment) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, null);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull FragmentManager fragmentManager, int containerResId,
+                                       @NotNull Fragment fragment, @Nullable String fragmentTag) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, false);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull FragmentManager fragmentManager, int containerResId,
+                                       @NotNull Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, addToBackStack, null);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull FragmentManager fragmentManager, int containerResId,
+                                       @NotNull Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack,
+                                       @Nullable String backStackName) {
+
+        FragmentTransaction tr = fragmentManager.beginTransaction();
+
+        if (fragmentTag == null) {
+            tr.replace(containerResId, fragment);
+        } else {
+            tr.replace(containerResId, fragment, fragmentTag);
+        }
+
+        if (addToBackStack) {
+            tr.addToBackStack(backStackName);
+        }
+
+        tr.commit();
     }
 
 }
