@@ -3,11 +3,13 @@ package com.mokalab.butler.adapter;
 import android.content.Context;
 import android.view.View;
 
+import com.mokalab.butler.util.ViewUtils;
+
 /**
  * A View Holder wrapper class.
  * Mainly used for Adapters to implement View Holder pattern.
  * <br></br><br></br>
- * Created by pirdad on 12/15/2013.
+ * Created by Pirdad S. on 12/15/2013.
  */
 public abstract class AdapterViewHolder<T> {
 
@@ -41,9 +43,8 @@ public abstract class AdapterViewHolder<T> {
      * to cast the return of this method. <br><br>
      * <b>May throw ClassCastException if the passed id's type is not the same as T.</b>
      */
-    protected <T extends View> T findViewByID(View from, int id) {
+    protected <T extends View> T findView(View from, int id) {
 
-        if (from == null) return null;
-        return (T) from.findViewById(id);
+        return ViewUtils.findView(from, id);
     }
 }

@@ -1,31 +1,82 @@
 package com.mokalab.butler.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
 /**
- * Created by work on 2014-06-13.
+ * Contains helper functions related to an Application or Application Class.
+ *
+ * Created by Pirdad S. on 2014-06-13.
  */
 public class ApplicationUtils {
 
+    private ApplicationUtils() {}
+
+    public static final String GOOGLE_MAPS_PACKAGE_NAME = "com.google.android.apps.maps";
+
     /**
-     * Get the application version code.
-     * @return the version code otherwise 0.
+     * Checks if Google Map is Installed.
+     *
+     * @return true if installed false otherwise
      */
-    public static int getApplicationVersionCode(Context context) {
+    public static boolean isGoogleMapInstalled(Context context) {
 
-        if (context == null || (context instanceof Activity && ((Activity) context).isFinishing())) return -1;
+        if (context == null) return false;
+        return isAppInstalled(context, GOOGLE_MAPS_PACKAGE_NAME);
+    }
 
-        PackageManager packageManager = context.getPackageManager();
+    /**
+     * Checks if an App is Installed.
+     *
+     * @return true if installed false otherwise
+     */
+    public static boolean isAppInstalled(Context context, String packageName) {
+
+        if (context == null) return false;
+
+        PackageManager pm = context.getApplicationContext().getPackageManager();
+        boolean isAppInstalled = false;
         try {
 
-            PackageInfo packageInfo = packageManager.getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.versionCode;
+            pm.getPackageInfo(packageName, PackageManager.GET_ACTIVITIES);
+            isAppInstalled = true;
 
-        } catch (PackageManager.NameNotFoundException ex) {}
+        } catch (PackageManager.NameNotFoundException e) {
+            isAppInstalled = false;
+        }
 
-        return 0;
+        return isAppInstalled;
+    }
+
+    /**
+     * Returns the version code.
+     * @return the version code, or 0 if was not possible to acquire it.
+     */
+    public static int getVersionCode(Context context) {
+
+        int version = 0;
+        try {
+
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            version = pInfo.versionCode;
+
+        } catch (PackageManager.NameNotFoundException e) {}
+        return version;
+    }
+
+    /**
+     * Returns the version name.
+     */
+    public static String getVersionName(Context context) {
+
+        String version = null;
+        try {
+
+            PackageInfo pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            version = pInfo.versionName;
+
+        } catch (PackageManager.NameNotFoundException e) {}
+        return version;
     }
 }

@@ -228,6 +228,7 @@ public abstract class ViewTypeAdapter extends BaseAdapter {
      * @return the view for that row
      */
     @Override
+    @SuppressWarnings("unchecked")
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View view = convertView;
@@ -250,7 +251,9 @@ public abstract class ViewTypeAdapter extends BaseAdapter {
         String convertViewName = (convertView == null) ? "null_not_recycled" : convertView.getClass().getSimpleName() + "_recycled";
         mLogger.info("#getView(" + position + ", " + convertViewName + ", parent) -> ViewHolderType: " + holderName);
 
-        holder.onSetData(view.getContext(), row, position);
+        if (holder != null) {
+            holder.onSetData(view.getContext(), row, position);
+        }
 
         return view;
     }
@@ -261,8 +264,8 @@ public abstract class ViewTypeAdapter extends BaseAdapter {
      * to cast the return of this method. <br><br>
      * <b>May throw ClassCastException if the passed id's type is not the same as T.</b>
      */
-    public static <T extends View> T findViewByID(View from, int id) {
+    public static <T extends View> T findView(View from, int id) {
 
-        return ViewUtils.findViewByID(from, id);
+        return ViewUtils.findView(from, id);
     }
 }

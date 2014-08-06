@@ -7,7 +7,12 @@ import android.widget.TextView;
 
 import com.mokalab.butler.interfaces.ITypeFaceStyleable;
 
+/**
+ * Contains helper/utility functions related to Views.
+ */
 public class ViewUtils {
+
+    private ViewUtils() {}
 
     /**
      * Use this method to Find a View by it's Id. The 'from' View is required. The is the
@@ -15,7 +20,8 @@ public class ViewUtils {
      * to cast the return of this method. <br><br>
      * <b>May throw ClassCastException if the passed id's type is not the same as T.</b>
      */
-    public static <T extends View> T findViewByID(View from, int id) {
+    @SuppressWarnings("unchecked")
+    public static <T extends View> T findView(View from, int id) {
 
         if (from == null) return null;
         return (T) from.findViewById(id);

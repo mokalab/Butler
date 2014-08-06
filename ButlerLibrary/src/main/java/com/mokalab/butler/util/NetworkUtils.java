@@ -1,22 +1,31 @@
 package com.mokalab.butler.util;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import org.apache.http.conn.util.InetAddressUtils;
-
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
+import org.apache.http.conn.util.InetAddressUtils;
+
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * Contains static helper/utility functions for Network related operations.
+ */
 public class NetworkUtils {
+
+    private NetworkUtils() {}
 
     /**
      * Convert byte array to hex string
-     * @param bytes
-     * @return
      */
     public static String bytesToHex(byte[] bytes) {
+
         StringBuilder sbuf = new StringBuilder();
         for(int idx=0; idx < bytes.length; idx++) {
             int intVal = bytes[idx] & 0xff;
@@ -27,24 +36,28 @@ public class NetworkUtils {
     }
 
     /**
-     * Get utf8 byte array.
-     * @param str
-     * @return  array of NULL if error was found
+     * Returns utf-8 byte array.
+     * @return array of NULL if error was found
      */
     public static byte[] getUTF8Bytes(String str) {
-        try { return str.getBytes("UTF-8"); } catch (Exception ex) { return null; }
+
+        try {
+            return str.getBytes("UTF-8");
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     /**
-     * Load UTF8withBOM or any ansi text file.
-     * @param filename
-     * @return
+     * Load UTF-8 with BOM or any ansi text file.
      * @throws java.io.IOException
      */
     public static String loadFileAsString(String filename) throws java.io.IOException {
+
         final int BUFLEN=1024;
         BufferedInputStream is = new BufferedInputStream(new FileInputStream(filename), BUFLEN);
         try {
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream(BUFLEN);
             byte[] bytes = new byte[BUFLEN];
             boolean isUTF8=false;
@@ -59,6 +72,7 @@ public class NetworkUtils {
                 count+=read;
             }
             return isUTF8 ? new String(baos.toByteArray(), "UTF-8") : new String(baos.toByteArray());
+
         } finally {
             try{ is.close(); } catch(Exception ex){}
         }
@@ -67,12 +81,15 @@ public class NetworkUtils {
     /**
      * Returns MAC address of the given interface name.
      * @param interfaceName eth0, wlan0 or NULL=use first interface
-     * @return  mac address or empty string
+     * @return mac address or empty string
      */
     public static String getMACAddress(String interfaceName) {
+
         try {
+
             List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface intf : interfaces) {
+
                 if (interfaceName != null) {
                     if (!intf.getName().equalsIgnoreCase(interfaceName)) continue;
                 }
@@ -84,8 +101,14 @@ public class NetworkUtils {
                 if (buf.length()>0) buf.deleteCharAt(buf.length()-1);
                 return buf.toString();
             }
-        } catch (Exception ex) { } // for now eat exceptions
+
+        } catch (Exception ex) {
+            // for now eat exceptions
+            // TODO: CONFIRM IF EXCEPTION NEEDS TO BE HANDLED
+        }
+
         return "";
+        // TODO: CONFIRM IF THE LINUX HACK IS REQUIRED...
 		/*try {
             // this is so Linux hack
             return loadFileAsString("/sys/class/net/" +interfaceName + "/address").toUpperCase().trim();
@@ -96,11 +119,13 @@ public class NetworkUtils {
 
     /**
      * Get IP address from first non-localhost interface
-     * @param ipv4  true=return ipv4, false=return ipv6
-     * @return  address or empty string
+     * @param useIPv4  true=return ipv4, false=return ipv6
+     * @return address or empty string
      */
     public static String getIPAddress(boolean useIPv4) {
+
         try {
+
             List<NetworkInterface> interfaces = Collections.list(NetworkInterface.getNetworkInterfaces());
             for (NetworkInterface intf : interfaces) {
                 List<InetAddress> addrs = Collections.list(intf.getInetAddresses());
@@ -120,15 +145,17 @@ public class NetworkUtils {
                     }
                 }
             }
-        } catch (Exception ex) { } // for now eat exceptions
+
+        } catch (Exception ex) {
+            // for now eat exceptions
+            // TODO: CONFIRM IF EXCEPTION NEEDS TO BE HANDLED
+        }
         return "";
     }
 
-    //-----------------------------------------------------------------
-    //------------
-    public static boolean isConnectedToNetwork(Context c)
-    {
-        ConnectivityManager cm = (ConnectivityManager)c.getSystemService(Context.CONNECTIVITY_SERVICE);
+    public static boolean isConnectedToNetwork(Context c) {
+
+        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo ni = cm.getActiveNetworkInfo();
         if (ni == null){

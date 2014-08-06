@@ -9,10 +9,10 @@ import android.util.TypedValue;
  */
 public class NumberUtils {
 
+    private NumberUtils() {}
+
     /**
-     * Get byte from bool, 1 for true and 0 for false.<br></br>
-     *
-     * @param bool
+     * Get byte from bool, 1 for true and 0 for false.
      * @return byte
      */
     public static byte getByteForBoolean(boolean bool) {
@@ -21,9 +21,7 @@ public class NumberUtils {
     }
 
     /**
-     * Get bool from byte, true for 1 and false for 0.<br></br>
-     *
-     * @param inByte
+     * Get bool from byte, true for 1 and false for 0.
      * @return boolean
      */
     public static boolean readBytleToBoolean(byte inByte) {
