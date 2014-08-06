@@ -1,9 +1,11 @@
 package com.mokalab.butler.util;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.util.TypedValue;
+import android.util.AttributeSet;
 import android.view.View;
+import android.widget.TextView;
+
+import com.mokalab.butler.interfaces.ITypeFaceStyleable;
 
 public class ViewUtils {
 
@@ -33,5 +35,32 @@ public class ViewUtils {
     public static float convertPxToDp(Context context, float px) {
 
         return NumberUtils.convertPxToDp(context, px);
+    }
+
+    /**
+     * Initializes the Type Face Cache. Only works on version 12 and above.
+     */
+    public static void initializeTypeFaceCache() {
+
+        TypefaceHelper.initializeTypeFaceCache();
+    }
+
+    /**
+     * Sets the Type Face to the View.
+     *
+     * @return true if was changed properly otherwise returns false (does the typefaceName exist in the /assets/?, did you miss the extension?)
+     */
+    public static boolean setTypeFace(TextView textView, String typefaceName) {
+
+        return TypefaceHelper.setTypeFace(textView, typefaceName);
+    }
+
+    /**
+     * Call this from the constructor that provides attributes.
+     * It will set the type face of the View from the AttributeSet.
+     */
+    public static void manageAttributes(TextView view, AttributeSet attrs, ITypeFaceStyleable typeFaceStyleable) {
+
+        TypefaceHelper.manageAttributes(view, attrs, typeFaceStyleable);
     }
 }
