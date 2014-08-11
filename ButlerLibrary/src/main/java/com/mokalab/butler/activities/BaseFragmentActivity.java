@@ -10,9 +10,11 @@ import android.view.View;
 import com.mokalab.butler.fragments.BaseFragment;
 import com.mokalab.butler.interfaces.IBundleArgs;
 import com.mokalab.butler.interfaces.IFragmentHelper;
+import com.mokalab.butler.interfaces.IMrLogger;
 import com.mokalab.butler.interfaces.IViewHelper;
 import com.mokalab.butler.util.BundleArgs;
 import com.mokalab.butler.util.FragmentUtils;
+import com.mokalab.butler.util.MrLogger;
 import com.mokalab.butler.util.ViewUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +26,11 @@ import java.util.ArrayList;
 /**
  * Created by Pirdad S on 2014-07-22.
  */
-public abstract class BaseFragmentActivity extends FragmentActivity implements IBundleArgs, IFragmentHelper, IViewHelper {
+public abstract class BaseFragmentActivity extends FragmentActivity implements IBundleArgs, IFragmentHelper, IViewHelper,
+        IMrLogger {
+
+    /* ================== */
+    /* ====== IBundleArgs */
 
     /**
      * Returns Bundle from getIntent().
@@ -100,6 +106,11 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
         return BundleArgs.getSerializableArg(getBundle(), key);
     }
 
+
+    /* ================== */
+    /* ====== IFragmentHelper */
+
+
     @Override
     public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag) {
 
@@ -127,10 +138,47 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
         return FragmentUtils.findFragmentByTag(mgr, fragmentTag, returnType);
     }
 
+
+    /* ================== */
+    /* ====== IViewHelper */
+
+
     @Nullable
     @Override
     public <T extends View> T findView(View from, int viewResId) {
 
         return ViewUtils.findView(from, viewResId);
+    }
+
+
+    /* ================== */
+    /* ====== IMrLogger */
+
+
+    @Override
+    public String getLogTag() {
+
+        return getClass().getSimpleName();
+    }
+
+    @Override
+    public void debug(String message) {
+
+        String tag = getLogTag();
+        MrLogger.debug(tag, message, shouldLog());
+    }
+
+    @Override
+    public void info(String message) {
+
+        String tag = getLogTag();
+        MrLogger.info(tag, message, shouldLog());
+    }
+
+    @Override
+    public void error(String message) {
+
+        String tag = getLogTag();
+        MrLogger.error(tag, message, shouldLog());
     }
 }
