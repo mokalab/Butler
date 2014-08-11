@@ -1,9 +1,11 @@
 package com.mokalab.butler.util;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mokalab.butler.interfaces.ITypeFaceStyleable;
 
@@ -68,5 +70,33 @@ public class ViewUtils {
     public static void manageAttributes(TextView view, AttributeSet attrs, ITypeFaceStyleable typeFaceStyleable) {
 
         TypefaceHelper.manageAttributes(view, attrs, typeFaceStyleable);
+    }
+
+    /**
+     * Returns the Height of the ActionBar in Pixels from android.R.attr.actionBarSize.
+     */
+    public static int getActionBarSizePixels(Context context) {
+
+        final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(new int[] { android.R.attr.actionBarSize });
+        int actionbarSize = (int) styledAttributes.getDimension(0, 0);
+        styledAttributes.recycle();
+
+        return actionbarSize;
+    }
+
+    /**
+     * Shows short Toast message.
+     */
+    public static void toastShort(Context context, String message) {
+
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Shows short Toast message.
+     */
+    public static void toastLong(Context context, String message) {
+
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 }
