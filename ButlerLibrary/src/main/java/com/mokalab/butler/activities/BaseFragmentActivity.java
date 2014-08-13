@@ -9,9 +9,11 @@ import android.view.View;
 
 import com.mokalab.butler.fragments.BaseFragment;
 import com.mokalab.butler.interfaces.IBundleArgs;
+import com.mokalab.butler.interfaces.IContextHelper;
 import com.mokalab.butler.interfaces.IFragmentHelper;
 import com.mokalab.butler.interfaces.IMrLogger;
 import com.mokalab.butler.interfaces.IViewHelper;
+import com.mokalab.butler.util.ActivityUtils;
 import com.mokalab.butler.util.BundleArgs;
 import com.mokalab.butler.util.FragmentUtils;
 import com.mokalab.butler.util.MrLogger;
@@ -27,7 +29,7 @@ import java.util.ArrayList;
  * Created by Pirdad S on 2014-07-22.
  */
 public abstract class BaseFragmentActivity extends FragmentActivity implements IBundleArgs, IFragmentHelper, IViewHelper,
-        IMrLogger {
+        IMrLogger, IContextHelper {
 
     /* ================== */
     /* ====== IBundleArgs */
@@ -180,5 +182,16 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
 
         String tag = getLogTag();
         MrLogger.error(tag, message, shouldLog());
+    }
+
+
+    /* ================== */
+    /* ====== IContextHelper */
+
+
+    @Override
+    public boolean isContextValid() {
+
+        return ActivityUtils.isContextValid(this);
     }
 }

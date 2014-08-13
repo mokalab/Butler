@@ -1,5 +1,6 @@
 package com.mokalab.butler.util;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -14,6 +15,18 @@ public class ApplicationUtils {
     private ApplicationUtils() {}
 
     public static final String GOOGLE_MAPS_PACKAGE_NAME = "com.google.android.apps.maps";
+
+    /**
+     * Checks if a Context is not null and returns true, otherwise false.
+     */
+    public static boolean isContextValid(Application context) {
+
+        if (context != null) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Checks if Google Map is Installed.
