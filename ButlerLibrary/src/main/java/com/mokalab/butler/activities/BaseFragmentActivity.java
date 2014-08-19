@@ -152,6 +152,12 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
         return ViewUtils.findView(from, viewResId);
     }
 
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public <T extends View> T findView(int viewResId) {
+
+        return (T) findViewById(viewResId);
+    }
 
     /* ================== */
     /* ====== IMrLogger */
