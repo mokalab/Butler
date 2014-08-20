@@ -53,4 +53,33 @@ public class BitmapUtils {
         script.forEach(output);
         output.copyTo(bitmap);
     }
+
+    /**
+     * This helper function can be used to convert your bitmap to any {@link android.graphics.Bitmap.Config}.[TYPE].
+     * <br><br>
+     * Example:
+     * <br>
+     * You can convert to Bitmap.Config.ARGB_8888 for {@link #renderScriptBlur(android.support.v8.renderscript.RenderScript,
+     * android.graphics.Bitmap, float)} to work.
+     *
+     * @param bitmap your original Bitmap
+     * @param bitmapType ex. Bitmap.Config.ARGB_8888
+     * @return the converted Bitmap
+     */
+    public static Bitmap convertBitmapType(Bitmap bitmap, Bitmap.Config bitmapType) {
+
+        int numPixels = bitmap.getWidth()* bitmap.getHeight();
+        int[] pixels = new int[numPixels];
+
+        //Get JPEG pixels.  Each int is the color values for one pixel.
+        bitmap.getPixels(pixels, 0, bitmap.getWidth(), 0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        //Create a Bitmap of the appropriate format.
+        Bitmap result = Bitmap.createBitmap(bitmap.getWidth(), bitmap.getHeight(), bitmapType);
+
+        //Set RGB pixels.
+        result.setPixels(pixels, 0, result.getWidth(), 0, 0, result.getWidth(), result.getHeight());
+
+        return result;
+    }
 }
