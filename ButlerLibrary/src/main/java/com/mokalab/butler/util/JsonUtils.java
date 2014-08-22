@@ -170,6 +170,27 @@ public class JsonUtils {
     }
 
     /**
+     * Get Integer from JSONObject by the given key, will return defaultLong if unsuccessful.
+     */
+    public static long parseLong(JSONObject object, String keyToParse, long defaultLong, String debugTag, boolean shouldLogInfo) {
+
+        Long intData = parseFromJsonObject(object, keyToParse, Long.class, debugTag, shouldLogInfo);
+        if (intData == null) {
+            intData = defaultLong;
+        }
+
+        return intData;
+    }
+
+    /**
+     * Get Integer from JSONObject by the given key, will return defaultLong if unsuccessful.
+     */
+    public static long parseLong(JSONObject object, String keyToParse, long defaultLong) {
+
+        return parseLong(object, keyToParse, defaultLong, "", false);
+    }
+
+    /**
      * Get Float from JSONObject by the given key, will return defaultFloat if unsuccessful.
      */
     public static float parseFloat(JSONObject object, String keyToParse, float defaultFloat, String debugTag, boolean shouldLogInfo) {
