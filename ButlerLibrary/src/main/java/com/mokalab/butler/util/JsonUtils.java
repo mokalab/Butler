@@ -93,17 +93,31 @@ public class JsonUtils {
     @SuppressWarnings("unchecked")
     public static <T> T parseFromJsonObject(JSONObject object, String keyToParse, Class<T> returnType, String debugTag, boolean shouldLogInfo) {
 
+        Object obj = parseFromJsonObject(object, keyToParse, debugTag, shouldLogInfo);
+        if (obj != null) {
+            if (returnType.isAssignableFrom(obj.getClass())) {
+                return (T) obj;
+            } else {
+                logInfo(debugTag, shouldLogInfo, "JSONObject '" + keyToParse + "' is not of type " + returnType.getSimpleName() + "! It is of type " + obj.getClass().getSimpleName() + "!");
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Function to parse an Object from a valid JSONObject by the specified key.
+     * If debug tag is set and debug is allowed, it will log info messages related to the parsing status.
+     */
+    @SuppressWarnings("unchecked")
+    public static Object parseFromJsonObject(JSONObject object, String keyToParse, String debugTag, boolean shouldLogInfo) {
+
         if (object != null && object.has(keyToParse)) {
 
             try {
 
                 Object obj = object.get(keyToParse);
-                if (obj != null && returnType.isAssignableFrom(obj.getClass())) {
-                    return (T) obj;
-                } else {
-                    logInfo(debugTag, shouldLogInfo, "JSONObject '" + keyToParse + "' is not of type " + returnType.getClass()
-                            .toString() + ".");
-                }
+                return obj;
 
             } catch (JSONException e) {
                 logInfo(debugTag, shouldLogInfo, e.getLocalizedMessage());
@@ -170,7 +184,7 @@ public class JsonUtils {
     }
 
     /**
-     * Get Integer from JSONObject by the given key, will return defaultLong if unsuccessful.
+     * Get Long from JSONObject by the given key, will return defaultLong if unsuccessful.
      */
     public static long parseLong(JSONObject object, String keyToParse, long defaultLong, String debugTag, boolean shouldLogInfo) {
 
@@ -183,11 +197,39 @@ public class JsonUtils {
     }
 
     /**
-     * Get Integer from JSONObject by the given key, will return defaultLong if unsuccessful.
+     * Get Long from JSONObject by the given key, will return defaultLong if unsuccessful.
      */
     public static long parseLong(JSONObject object, String keyToParse, long defaultLong) {
 
         return parseLong(object, keyToParse, defaultLong, "", false);
+    }
+
+    /**
+     * Parses a Long Object from JSONObject if it is cast-able. Ex. can cast an Integer to a Long.
+     */
+    public static long parseToLong(JSONObject object, String keyToParse, long defaultLong) {
+
+        return parseToLong(object, keyToParse, defaultLong, "", false);
+    }
+
+    /**
+     * Parses a Long Object from JSONObject if it is cast-able. Ex. can cast an Integer to a Long.
+     */
+    public static long parseToLong(JSONObject object, String keyToParse, long defaultLong, String debugTag,
+                                   boolean shouldLogInfo) {
+
+        Object value = parseFromJsonObject(object, keyToParse, debugTag, shouldLogInfo);
+        if (value != null) {
+            try {
+                Long longVal = Long.parseLong(String.valueOf(value.toString()));
+                return longVal;
+            } catch (ClassCastException e) {
+                logInfo(debugTag, shouldLogInfo, "The parsed Object is not of type Long. It's of type " + value.getClass()
+                        .getSimpleName() + "!");
+            }
+        }
+
+        return -1;
     }
 
     /**
