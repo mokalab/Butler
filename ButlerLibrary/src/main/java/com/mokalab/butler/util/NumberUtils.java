@@ -100,4 +100,29 @@ public class NumberUtils {
         Random randomGen = new Random(seed);
         return randomGen.nextFloat() * (max - min) + min;
     }
+
+    /**
+     * Generate a random Long based on a min and max.
+     * @param min ex. 55876
+     * @param max ex. 100329487
+     * @return ex. a number between 55876 and 100329487
+     */
+    public static long generateRandom(long min, long max) {
+
+        Random randomGen = new Random();
+        return min + (long) (randomGen.nextDouble() * (max - min));
+    }
+
+    /**
+     * Generate a random Long based on a min and max.
+     * @param seed the initial state, set this for better randomness
+     * @param min ex. 55876
+     * @param max ex. 100329487
+     * @return ex. a number between 55876 and 100329487
+     */
+    public static long generateRandom(long seed, long min, long max) {
+
+        Random randomGen = new Random(seed);
+        return min + (long) (randomGen.nextDouble() * (max - min));
+    }
 }
