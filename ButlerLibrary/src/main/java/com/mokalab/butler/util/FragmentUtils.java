@@ -144,6 +144,15 @@ public class FragmentUtils {
      * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
      */
     public static void replaceFragment(@NotNull android.support.v4.app.FragmentManager fragmentManager, int containerResId,
+                                       @NotNull android.support.v4.app.Fragment fragment, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, null, enterAnim, exitAnim, popEnterAnim, popExitAnim);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull android.support.v4.app.FragmentManager fragmentManager, int containerResId,
                                        @NotNull android.support.v4.app.Fragment fragment, @Nullable String fragmentTag) {
 
         replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, false);
@@ -153,9 +162,31 @@ public class FragmentUtils {
      * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
      */
     public static void replaceFragment(@NotNull android.support.v4.app.FragmentManager fragmentManager, int containerResId,
-                                       @NotNull android.support.v4.app.Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack) {
+                                       @NotNull android.support.v4.app.Fragment fragment, @Nullable String fragmentTag,
+                                       int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
 
-        replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, addToBackStack, null);
+        replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, false, enterAnim, exitAnim, popEnterAnim, popExitAnim);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull android.support.v4.app.FragmentManager fragmentManager, int containerResId,
+                                       @NotNull android.support.v4.app.Fragment fragment, @Nullable String fragmentTag,
+                                       boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, addToBackStack, null, enterAnim, exitAnim,
+                popEnterAnim, popExitAnim);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull android.support.v4.app.FragmentManager fragmentManager, int containerResId,
+                                       @NotNull android.support.v4.app.Fragment fragment, @Nullable String fragmentTag,
+                                       boolean addToBackStack) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, addToBackStack, null, 0, 0, 0, 0);
     }
 
     /**
@@ -163,9 +194,13 @@ public class FragmentUtils {
      */
     public static void replaceFragment(@NotNull android.support.v4.app.FragmentManager fragmentManager, int containerResId,
                                        @NotNull android.support.v4.app.Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack,
-                                       @Nullable String backStackName) {
+                                       @Nullable String backStackName, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
 
         android.support.v4.app.FragmentTransaction tr = fragmentManager.beginTransaction();
+
+        if (enterAnim > 0 || exitAnim > 0 || popEnterAnim > 0 || popExitAnim > 0) {
+            tr.setCustomAnimations(enterAnim, exitAnim, popEnterAnim, popExitAnim);
+        }
 
         if (fragmentTag == null) {
             tr.replace(containerResId, fragment);
@@ -220,9 +255,27 @@ public class FragmentUtils {
      * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
      */
     public static void replaceFragment(@NotNull FragmentManager fragmentManager, int containerResId,
+                                       @NotNull Fragment fragment, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, null, enterAnim, exitAnim, popEnterAnim, popExitAnim);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull FragmentManager fragmentManager, int containerResId,
                                        @NotNull Fragment fragment, @Nullable String fragmentTag) {
 
         replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, false);
+    }
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull FragmentManager fragmentManager, int containerResId,
+                                       @NotNull Fragment fragment, @Nullable String fragmentTag, int enterAnim, int exitAnim,
+                                       int popEnterAnim, int popExitAnim) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, false, enterAnim, exitAnim, popEnterAnim, popExitAnim);
     }
 
     /**
@@ -239,9 +292,34 @@ public class FragmentUtils {
      */
     public static void replaceFragment(@NotNull FragmentManager fragmentManager, int containerResId,
                                        @NotNull Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack,
+                                       int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, addToBackStack, null, enterAnim, exitAnim,
+                popEnterAnim, popExitAnim);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull FragmentManager fragmentManager, int containerResId,
+                                       @NotNull Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack,
                                        @Nullable String backStackName) {
 
+        replaceFragment(fragmentManager, containerResId, fragment, fragmentTag, addToBackStack, backStackName, 0, 0, 0, 0);
+    }
+
+    /**
+     * Replaces container's Fragment with the specified Fragment using the Fragment Manager.
+     */
+    public static void replaceFragment(@NotNull FragmentManager fragmentManager, int containerResId,
+                                       @NotNull Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack,
+                                       @Nullable String backStackName, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
         FragmentTransaction tr = fragmentManager.beginTransaction();
+
+        if (enterAnim > 0 || exitAnim > 0) {
+            tr.setCustomAnimations(enterAnim, exitAnim, popEnterAnim, popExitAnim);
+        }
 
         if (fragmentTag == null) {
             tr.replace(containerResId, fragment);

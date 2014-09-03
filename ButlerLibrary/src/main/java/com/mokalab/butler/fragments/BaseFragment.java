@@ -127,6 +127,25 @@ public abstract class BaseFragment extends Fragment implements IBundleArgs, IFra
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack);
     }
 
+    @Override
+    @TargetApi(17)
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        FragmentManager mgr = getChildFragmentManager();
+        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, enterAnim, exitAnim,
+                popEnterAnim, popExitAnim);
+    }
+
+    @Override
+    @TargetApi(17)
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        FragmentManager mgr = getChildFragmentManager();
+        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, enterAnim, exitAnim, popEnterAnim, popExitAnim);
+    }
+
     /**
      * Finds Fragment by Tag from the Child Fragment Manager. Call requires api level 17.
      * If the specified type does not match the found fragment type, it'll throw

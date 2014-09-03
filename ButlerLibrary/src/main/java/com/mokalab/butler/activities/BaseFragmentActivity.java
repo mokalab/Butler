@@ -121,10 +121,28 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag, boolean addToBackStack) {
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        FragmentManager mgr = getSupportFragmentManager();
+        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, enterAnim, exitAnim, popEnterAnim, popExitAnim);
+    }
+
+    @Override
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                boolean addToBackStack) {
 
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack);
+    }
+
+    @Override
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        FragmentManager mgr = getSupportFragmentManager();
+        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, enterAnim, exitAnim,
+                popEnterAnim, popExitAnim);
     }
 
     /**

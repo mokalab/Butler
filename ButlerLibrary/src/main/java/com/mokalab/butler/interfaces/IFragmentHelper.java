@@ -24,7 +24,20 @@ public interface IFragmentHelper {
     /**
      * Replace Fragment using FragmentManager.
      */
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag, boolean addToBackStack);
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim);
+
+    /**
+     * Replace Fragment using FragmentManager.
+     */
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                boolean addToBackStack);
+
+    /**
+     * Replace Fragment using FragmentManager.
+     */
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim);
 
     /**
      * Finds fragment by tag and returns the casted type based on the
