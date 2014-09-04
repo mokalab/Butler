@@ -219,7 +219,8 @@ public class JsonUtils {
                                    boolean shouldLogInfo) {
 
         Object value = parseFromJsonObject(object, keyToParse, debugTag, shouldLogInfo);
-        if (value != null) {
+
+        if (value != null && !value.toString().equalsIgnoreCase("null")) {
             try {
                 Long longVal = Long.parseLong(String.valueOf(value.toString()));
                 return longVal;
@@ -229,7 +230,7 @@ public class JsonUtils {
             }
         }
 
-        return -1;
+        return defaultLong;
     }
 
     /**
