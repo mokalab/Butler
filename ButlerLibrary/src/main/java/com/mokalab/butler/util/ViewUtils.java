@@ -14,7 +14,8 @@ import com.mokalab.butler.interfaces.ITypeFaceStyleable;
  */
 public class ViewUtils {
 
-    private ViewUtils() {}
+    private ViewUtils() {
+    }
 
     /**
      * Use this method to Find a View by it's Id. The 'from' View is required. The is the
@@ -32,17 +33,17 @@ public class ViewUtils {
     /**
      * Converts Dp to Px
      */
-    public static float convertDpToPx(Context context, float dp) {
+    public static int convertDpToPx(Context context, float dp) {
 
-        return NumberUtils.convertDpToPx(context, dp);
+        return (int) NumberUtils.convertDpToPx(context, dp);
     }
 
     /**
      * Converts Px to Dp
      */
-    public static float convertPxToDp(Context context, float px) {
+    public static int convertPxToDp(Context context, float px) {
 
-        return NumberUtils.convertPxToDp(context, px);
+        return (int) NumberUtils.convertPxToDp(context, px);
     }
 
     /**
@@ -77,7 +78,7 @@ public class ViewUtils {
      */
     public static int getActionBarSizePixels(Context context) {
 
-        final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(new int[] { android.R.attr.actionBarSize });
+        final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
         int actionbarSize = (int) styledAttributes.getDimension(0, 0);
         styledAttributes.recycle();
 
