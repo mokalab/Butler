@@ -41,7 +41,7 @@ public class ViewUtils {
     /**
      * Converts Px to Dp
      */
-    public static int convertPxToDp(Context context, float px) {
+    public static float convertPxToDp(Context context, float px) {
 
         return (int) NumberUtils.convertPxToDp(context, px);
     }
