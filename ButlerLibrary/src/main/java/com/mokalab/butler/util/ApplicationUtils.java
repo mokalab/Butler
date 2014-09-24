@@ -1,5 +1,6 @@
 package com.mokalab.butler.util;
 
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -91,5 +92,15 @@ public class ApplicationUtils {
 
         } catch (PackageManager.NameNotFoundException e) {}
         return version;
+    }
+
+
+    /**
+     * Triggers hide action on the InputManager.
+     * @param activity required to determine where the current focus is at
+     */
+    public static void hideSoftKeyboard(Activity activity) {
+
+        ViewUtils.hideSoftKeyboard(activity);
     }
 }

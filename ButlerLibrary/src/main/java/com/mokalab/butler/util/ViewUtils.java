@@ -1,9 +1,11 @@
 package com.mokalab.butler.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -99,5 +101,21 @@ public class ViewUtils {
     public static void toastLong(Context context, String message) {
 
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Triggers hide action on the InputManager.
+     * @param activity required to determine where the current focus is at
+     */
+    public static void hideSoftKeyboard(Activity activity) {
+
+        if (!ActivityUtils.isContextValid(activity)) return;
+
+        View currentFocus = activity.getCurrentFocus();
+
+        if (currentFocus != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
     }
 }

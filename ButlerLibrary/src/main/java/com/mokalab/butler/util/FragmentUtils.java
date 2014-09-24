@@ -334,4 +334,13 @@ public class FragmentUtils {
         tr.commit();
     }
 
+
+    /**
+     * Triggers hide action on the InputManager.
+     * @param activity required to determine where the current focus is at
+     */
+    public static void hideSoftKeyboard(Activity activity) {
+
+        ViewUtils.hideSoftKeyboard(activity);
+    }
 }

@@ -1,4 +1,4 @@
-package com.mokalab.butler;
+package com.mokalab.butler.util;
 
 import android.app.Activity;
 import android.content.Intent;
