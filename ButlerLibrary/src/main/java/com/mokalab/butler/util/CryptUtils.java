@@ -1,6 +1,5 @@
 package com.mokalab.butler.util;
 
-import android.util.Log;
 
 /**
  * Created by Artur Shamsi on 2014-10-03.
@@ -58,4 +57,61 @@ public class CryptUtils {
         }
         return decryptedString != null ? decryptedString.toString(): null;
     }//end method decryptWithXOR
+
+    /**
+     * Gets encoded with Base64 XOR encrypted String
+     * @param input
+     * @param key
+     * @return
+     */
+    public static String encodeEncryptedString(String input, char key) {
+        return input != null ? getBase64Encoded(encryptWithXOR(input, key).getBytes()) : null;
+    }//end encodeEncryptedString method
+
+    /**
+     * Decodes String with Base64 and decrypts it with XOR
+     * @param input
+     * @param key
+     * @return
+     */
+    public static String decodeAndDecryptString(String input, char key) {
+        String base64Decoded = getBase64Decoded(input);
+        return base64Decoded != null ? decryptWithXOR(base64Decoded, key) : null;
+    }//end decodeAndDecryptString method
+
+    /**
+     * Returns Base64 encoded String
+     * @param input
+     * @return
+     */
+    private static String getBase64Encoded(byte [] input) {
+        String encoded = null;
+        try {
+            if (input != null) {
+                encoded = Base64.encode(input);
+            }
+        } catch (Exception exc) {
+            exc.printStackTrace();
+        }
+        return encoded;
+    }//end getBase64Encoded method
+
+    /**
+     * Returns Base64 decoded String
+     * @param input
+     * @return
+     */
+    private static String getBase64Decoded(String input) {
+        byte [] decodedBytes = null;
+        String decodedString = null;
+        try {
+            if (input != null) {
+                decodedBytes = Base64.decode(input.getBytes());
+                decodedString = new String(decodedBytes);
+            }
+        } catch (Base64DecoderException b64de) {
+            b64de.printStackTrace();
+        }
+        return  decodedString;
+    }//end getBase64Decoded method
 }
