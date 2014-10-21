@@ -1,6 +1,11 @@
 package com.mokalab.butler.util;
 
 
+import org.jetbrains.annotations.Nullable;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by Artur Shamsi on 2014-10-03.
  */
@@ -114,4 +119,30 @@ public class CryptUtils {
         }
         return  decodedString;
     }//end getBase64Decoded method
+
+    /**
+     * Generates and returns an MD5 Hash of the provided input String.
+     * If there were errors, it will return null.
+     * @param input any String data
+     * @return MD5 encoded hash
+     */
+    @Nullable
+    public static String md5(String input) {
+
+        try {
+
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] hash = md.digest(input.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < hash.length; i++) {
+                sb.append(Integer.toHexString((hash[i] & 0xFF) | 0x100).substring(1,3));
+            }
+            return sb.toString();
+
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
