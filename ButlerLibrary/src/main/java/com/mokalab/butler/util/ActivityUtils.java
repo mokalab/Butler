@@ -1,6 +1,8 @@
 package com.mokalab.butler.util;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
 
 /**
  * This class provides helper/utilities functions related to Activities.
@@ -30,5 +32,22 @@ public class ActivityUtils {
     public static void hideSoftKeyboard(Activity activity) {
 
         ViewUtils.hideSoftKeyboard(activity);
+    }
+
+    /**
+     * Returns the Memory Class of the App or Context provided.
+     * <br><br>
+     * Memory Class defines the application's maximum heap size. They are based on the
+     * device's overall memory. The values are in base of 16. You may use
+     * it to manage your application's memory properly.
+     * <br><br>
+     * Example Classes: 16, 24, 48, 64, 80, 96, 112, 128 etc...
+     */
+    public static int getMemoryClass(Context context) {
+
+        if (context == null) return -1;
+
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        return am.getMemoryClass();
     }
 }
