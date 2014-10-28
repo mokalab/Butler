@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import java.util.Locale;
+
 /**
  * Contains helper functions related to an Application or Application Class.
  *
@@ -92,6 +94,13 @@ public class ApplicationUtils {
 
         } catch (PackageManager.NameNotFoundException e) {}
         return version;
+    }
+
+    /**
+     * Returns the device language settings
+     */
+    public static String getLocaleLanguage() {
+        return Locale.getDefault().getDisplayLanguage();
     }
 
 
