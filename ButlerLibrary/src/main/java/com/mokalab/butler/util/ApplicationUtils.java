@@ -86,6 +86,8 @@ public class ApplicationUtils {
      */
     public static String getVersionName(Context context) {
 
+        if (!ContextUtils.isContextValid(context)) return "";
+
         String version = null;
         try {
 
