@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Class functions as a helper to provide easy
  */
@@ -12,65 +14,76 @@ public class JsonUtils {
     private JsonUtils() {}
 
     /**
-     * Parse String to JSONObject.
+     * Get JSONObject from JSONObject by the given key, will return null if unsuccessful.
      */
-    public static JSONObject convertToJSONObject(String response, String debugTag, boolean shouldLogInfo) {
+    public static JSONObject getJsonObject(JSONObject object, String keyToParse, String debugTag, boolean shouldLogInfo) {
 
-        if (response != null) {
+        return parseFromJsonObject(object, keyToParse, JSONObject.class, debugTag, shouldLogInfo);
+    }
 
-            JSONObject jsonObject = null;
-            try {
-                jsonObject = new JSONObject(response);
-            } catch (JSONException e) {
-                logInfo(debugTag, shouldLogInfo, "response couldn't be converted to JSONObject. More Info: " + e.getLocalizedMessage());
-                return null;
-            }
+    /**
+     * Get JSONObject from JSONObject by the given key, will return null if unsuccessful.
+     */
+    public static JSONObject getJsonObject(JSONObject object, String keyToParse) {
 
-            return jsonObject;
+        return parseFromJsonObject(object, keyToParse, JSONObject.class, "", false);
+    }
 
-        } else {
-            logInfo(debugTag, shouldLogInfo, "String response is null therefore the JSONObject is null.");
+    /**
+     * Get JSONArray from JSONObject by the given key, will return null if unsuccessful.
+     */
+    public static JSONArray getJsonArray(JSONObject object, String keyToParse, String debugTag, boolean shouldLogInfo) {
+
+        return parseFromJsonObject(object, keyToParse, JSONArray.class, debugTag, shouldLogInfo);
+    }
+
+    /**
+     * Get JSONArray from JSONObject by the given key, will return null if unsuccessful.
+     */
+    public static JSONArray getJsonArray(JSONObject object, String keyToParse) {
+
+        return parseFromJsonObject(object, keyToParse, JSONArray.class, "", false);
+    }
+
+    /**
+     * Get JSONObject from JSONArray by the given index, will return null if unsuccessful.
+     */
+    public static JSONObject getJsonObjectAt(JSONArray array, int index) {
+
+        try {
+            return array.getJSONObject(index);
+        } catch (Exception e) {
             return null;
         }
     }
 
     /**
-     * Parse String to JSONObject.
+     * Get Integer from JSONArray by the given index, will return -1 if unsuccessful.
      */
-    public static JSONObject convertToJSONObject(String response) {
+    public static int parseIntAt(JSONArray array, int index) {
 
-        return convertToJSONObject(response, "", false);
-    }
-
-    /**
-     * Parse String to JSONArray.
-     */
-    public static JSONArray convertToJSONArray(String response, String debugTag, boolean shouldLogInfo) {
-
-        if (response != null) {
-
-            JSONArray jsonArray = null;
-            try {
-                jsonArray = new JSONArray(response);
-            } catch (JSONException e) {
-                logInfo(debugTag, shouldLogInfo, "response couldn't be converted to JSONArray. More Info: " + e.getLocalizedMessage());
-                return null;
-            }
-
-            return jsonArray;
-
-        } else {
-            logInfo(debugTag, shouldLogInfo, "String response is null therefore the JSONArray is null.");
-            return null;
+        try {
+            return array.getInt(index);
+        } catch (Exception e) {
+            return -1;
         }
     }
 
     /**
-     * Parse String to JSONArray.
+     * Get String from JSONArray by the given index, will return defaultStr if unsuccessful.
      */
-    public static JSONArray convertToJSONArray(String response) {
+    public static String parseStringAt(JSONArray array, int index, String defaultStr) {
 
-        return convertToJSONArray(response, "", false);
+        try {
+            String value = array.getString(index);
+            if (value == null) {
+                return defaultStr;
+            } else {
+                return value;
+            }
+        } catch (Exception e) {
+            return defaultStr;
+        }
     }
 
     /**
@@ -80,17 +93,31 @@ public class JsonUtils {
     @SuppressWarnings("unchecked")
     public static <T> T parseFromJsonObject(JSONObject object, String keyToParse, Class<T> returnType, String debugTag, boolean shouldLogInfo) {
 
+        Object obj = parseFromJsonObject(object, keyToParse, debugTag, shouldLogInfo);
+        if (obj != null) {
+            if (returnType.isAssignableFrom(obj.getClass())) {
+                return (T) obj;
+            } else {
+                logInfo(debugTag, shouldLogInfo, "JSONObject '" + keyToParse + "' is not of type " + returnType.getSimpleName() + "! It is of type " + obj.getClass().getSimpleName() + "!");
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Function to parse an Object from a valid JSONObject by the specified key.
+     * If debug tag is set and debug is allowed, it will log info messages related to the parsing status.
+     */
+    @SuppressWarnings("unchecked")
+    public static Object parseFromJsonObject(JSONObject object, String keyToParse, String debugTag, boolean shouldLogInfo) {
+
         if (object != null && object.has(keyToParse)) {
 
             try {
 
                 Object obj = object.get(keyToParse);
-                if (obj != null && returnType.isAssignableFrom(obj.getClass())) {
-                    return (T) obj;
-                } else {
-                    logInfo(debugTag, shouldLogInfo, "JSONObject '" + keyToParse + "' is not of type " + returnType.getClass()
-                            .toString() + ".");
-                }
+                return obj;
 
             } catch (JSONException e) {
                 logInfo(debugTag, shouldLogInfo, e.getLocalizedMessage());
@@ -154,6 +181,56 @@ public class JsonUtils {
     public static int parseInt(JSONObject object, String keyToParse, int defaultInt) {
 
         return parseInt(object, keyToParse, defaultInt, "", false);
+    }
+
+    /**
+     * Get Long from JSONObject by the given key, will return defaultLong if unsuccessful.
+     */
+    public static long parseLong(JSONObject object, String keyToParse, long defaultLong, String debugTag, boolean shouldLogInfo) {
+
+        Long intData = parseFromJsonObject(object, keyToParse, Long.class, debugTag, shouldLogInfo);
+        if (intData == null) {
+            intData = defaultLong;
+        }
+
+        return intData;
+    }
+
+    /**
+     * Get Long from JSONObject by the given key, will return defaultLong if unsuccessful.
+     */
+    public static long parseLong(JSONObject object, String keyToParse, long defaultLong) {
+
+        return parseLong(object, keyToParse, defaultLong, "", false);
+    }
+
+    /**
+     * Parses a Long Object from JSONObject if it is cast-able. Ex. can cast an Integer to a Long.
+     */
+    public static long parseToLong(JSONObject object, String keyToParse, long defaultLong) {
+
+        return parseToLong(object, keyToParse, defaultLong, "", false);
+    }
+
+    /**
+     * Parses a Long Object from JSONObject if it is cast-able. Ex. can cast an Integer to a Long.
+     */
+    public static long parseToLong(JSONObject object, String keyToParse, long defaultLong, String debugTag,
+                                   boolean shouldLogInfo) {
+
+        Object value = parseFromJsonObject(object, keyToParse, debugTag, shouldLogInfo);
+
+        if (value != null && !value.toString().equalsIgnoreCase("null")) {
+            try {
+                Long longVal = Long.parseLong(String.valueOf(value.toString()));
+                return longVal;
+            } catch (ClassCastException e) {
+                logInfo(debugTag, shouldLogInfo, "The parsed Object is not of type Long. It's of type " + value.getClass()
+                        .getSimpleName() + "!");
+            }
+        }
+
+        return defaultLong;
     }
 
     /**
@@ -234,76 +311,97 @@ public class JsonUtils {
     }
 
     /**
-     * Get JSONObject from JSONObject by the given key, will return null if unsuccessful.
+     * Finds a JSONArray based on the provided key and parses it to an ArrayList of String.
      */
-    public static JSONObject getJsonObject(JSONObject object, String keyToParse, String debugTag, boolean shouldLogInfo) {
+    public static ArrayList<String> parseToStringArrayList(JSONObject object, String keyToParse) {
 
-        return parseFromJsonObject(object, keyToParse, JSONObject.class, debugTag, shouldLogInfo);
+        return parseToStringArrayList(object, keyToParse, "", false);
     }
 
     /**
-     * Get JSONObject from JSONObject by the given key, will return null if unsuccessful.
+     * Finds a JSONArray based on the provided key and parses it to an ArrayList of String.
      */
-    public static JSONObject getJsonObject(JSONObject object, String keyToParse) {
+    public static ArrayList<String> parseToStringArrayList(JSONObject object, String keyToParse, String debugTag,
+                                                     boolean shouldLogInfo) {
 
-        return parseFromJsonObject(object, keyToParse, JSONObject.class, "", false);
+        ArrayList<String> values = new ArrayList<String>();
+
+        JSONArray jsonArray = getJsonArray(object, keyToParse);
+        if (jsonArray != null) {
+            for (int i = 0; i < jsonArray.length(); i++) {
+                String value = parseStringAt(jsonArray, i, null);
+                if (value != null) {
+                    values.add(value);
+                } else {
+                    logInfo(debugTag, shouldLogInfo, "String is null at (" + i + ") and wasn't added to the ArrayList of String" +
+                            ".");
+                }
+            }
+        }
+
+        return values;
     }
 
     /**
-     * Get JSONArray from JSONObject by the given key, will return null if unsuccessful.
+     * Parse String to JSONObject.
      */
-    public static JSONArray getJsonArray(JSONObject object, String keyToParse, String debugTag, boolean shouldLogInfo) {
+    public static JSONObject convertToJSONObject(String response, String debugTag, boolean shouldLogInfo) {
 
-        return parseFromJsonObject(object, keyToParse, JSONArray.class, debugTag, shouldLogInfo);
-    }
+        if (response != null) {
 
-    /**
-     * Get JSONArray from JSONObject by the given key, will return null if unsuccessful.
-     */
-    public static JSONArray getJsonArray(JSONObject object, String keyToParse) {
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(response);
+            } catch (JSONException e) {
+                logInfo(debugTag, shouldLogInfo, "response couldn't be converted to JSONObject. More Info: " + e.getLocalizedMessage());
+                return null;
+            }
 
-        return parseFromJsonObject(object, keyToParse, JSONArray.class, "", false);
-    }
+            return jsonObject;
 
-    /**
-     * Get JSONObject from JSONArray by the given index, will return null if unsuccessful.
-     */
-    public static JSONObject getJsonObjectForIndex(JSONArray array, int index) {
-
-        try {
-            return array.getJSONObject(index);
-        } catch (Exception e) {
+        } else {
+            logInfo(debugTag, shouldLogInfo, "String response is null therefore the JSONObject is null.");
             return null;
         }
     }
 
     /**
-     * Get Integer from JSONArray by the given index, will return -1 if unsuccessful.
+     * Parse String to JSONObject.
      */
-    public static int getIntForIndex(JSONArray array, int index) {
+    public static JSONObject convertToJSONObject(String response) {
 
-        try {
-            return array.getInt(index);
-        } catch (Exception e) {
-            return -1;
+        return convertToJSONObject(response, "", false);
+    }
+
+    /**
+     * Parse String to JSONArray.
+     */
+    public static JSONArray convertToJSONArray(String response, String debugTag, boolean shouldLogInfo) {
+
+        if (response != null) {
+
+            JSONArray jsonArray = null;
+            try {
+                jsonArray = new JSONArray(response);
+            } catch (JSONException e) {
+                logInfo(debugTag, shouldLogInfo, "response couldn't be converted to JSONArray. More Info: " + e.getLocalizedMessage());
+                return null;
+            }
+
+            return jsonArray;
+
+        } else {
+            logInfo(debugTag, shouldLogInfo, "String response is null therefore the JSONArray is null.");
+            return null;
         }
     }
 
     /**
-     * Get String from JSONArray by the given index, will return defaultStr if unsuccessful.
+     * Parse String to JSONArray.
      */
-    public static String getStringForIndex(JSONArray array, int index, String defaultStr) {
+    public static JSONArray convertToJSONArray(String response) {
 
-        try {
-            String value = array.getString(index);
-            if (value == null) {
-                return defaultStr;
-            } else {
-                return value;
-            }
-        } catch (Exception e) {
-            return defaultStr;
-        }
+        return convertToJSONArray(response, "", false);
     }
 
     /**

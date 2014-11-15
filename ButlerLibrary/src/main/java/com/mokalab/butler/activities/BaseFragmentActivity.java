@@ -9,10 +9,14 @@ import android.view.View;
 
 import com.mokalab.butler.fragments.BaseFragment;
 import com.mokalab.butler.interfaces.IBundleArgs;
+import com.mokalab.butler.interfaces.IContextHelper;
 import com.mokalab.butler.interfaces.IFragmentHelper;
+import com.mokalab.butler.interfaces.IMrLogger;
 import com.mokalab.butler.interfaces.IViewHelper;
+import com.mokalab.butler.util.ActivityUtils;
 import com.mokalab.butler.util.BundleArgs;
 import com.mokalab.butler.util.FragmentUtils;
+import com.mokalab.butler.util.MrLogger;
 import com.mokalab.butler.util.ViewUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +28,11 @@ import java.util.ArrayList;
 /**
  * Created by Pirdad S on 2014-07-22.
  */
-public abstract class BaseFragmentActivity extends FragmentActivity implements IBundleArgs, IFragmentHelper, IViewHelper {
+public abstract class BaseFragmentActivity extends FragmentActivity implements IBundleArgs, IFragmentHelper, IViewHelper,
+        IMrLogger, IContextHelper {
+
+    /* ================== */
+    /* ====== IBundleArgs */
 
     /**
      * Returns Bundle from getIntent().
@@ -100,6 +108,11 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
         return BundleArgs.getSerializableArg(getBundle(), key);
     }
 
+
+    /* ================== */
+    /* ====== IFragmentHelper */
+
+
     @Override
     public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag) {
 
@@ -108,10 +121,28 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag, boolean addToBackStack) {
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        FragmentManager mgr = getSupportFragmentManager();
+        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, enterAnim, exitAnim, popEnterAnim, popExitAnim);
+    }
+
+    @Override
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                boolean addToBackStack) {
 
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack);
+    }
+
+    @Override
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        FragmentManager mgr = getSupportFragmentManager();
+        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, enterAnim, exitAnim,
+                popEnterAnim, popExitAnim);
     }
 
     /**
@@ -127,10 +158,64 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
         return FragmentUtils.findFragmentByTag(mgr, fragmentTag, returnType);
     }
 
+
+    /* ================== */
+    /* ====== IViewHelper */
+
+
     @Nullable
     @Override
     public <T extends View> T findView(View from, int viewResId) {
 
         return ViewUtils.findView(from, viewResId);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public <T extends View> T findView(int viewResId) {
+
+        return (T) findViewById(viewResId);
+    }
+
+    /* ================== */
+    /* ====== IMrLogger */
+
+
+    @Override
+    public String getLogTag() {
+
+        return getClass().getSimpleName();
+    }
+
+    @Override
+    public void debug(String message) {
+
+        String tag = getLogTag();
+        MrLogger.debug(tag, message, shouldLog());
+    }
+
+    @Override
+    public void info(String message) {
+
+        String tag = getLogTag();
+        MrLogger.info(tag, message, shouldLog());
+    }
+
+    @Override
+    public void error(String message) {
+
+        String tag = getLogTag();
+        MrLogger.error(tag, message, shouldLog());
+    }
+
+
+    /* ================== */
+    /* ====== IContextHelper */
+
+
+    @Override
+    public boolean isContextValid() {
+
+        return ActivityUtils.isContextValid(this);
     }
 }

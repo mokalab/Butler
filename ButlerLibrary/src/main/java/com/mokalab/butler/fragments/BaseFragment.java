@@ -7,10 +7,14 @@ import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.mokalab.butler.interfaces.IBundleArgs;
+import com.mokalab.butler.interfaces.IContextHelper;
 import com.mokalab.butler.interfaces.IFragmentHelper;
+import com.mokalab.butler.interfaces.IMrLogger;
 import com.mokalab.butler.interfaces.IViewHelper;
+import com.mokalab.butler.util.ActivityUtils;
 import com.mokalab.butler.util.BundleArgs;
 import com.mokalab.butler.util.FragmentUtils;
+import com.mokalab.butler.util.MrLogger;
 import com.mokalab.butler.util.ViewUtils;
 
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +29,11 @@ import java.util.ArrayList;
  * <br><br>
  * Created by Pirdad S on 2014-07-22.
  */
-public abstract class BaseFragment extends Fragment implements IBundleArgs, IFragmentHelper, IViewHelper {
+public abstract class BaseFragment extends Fragment implements IBundleArgs, IFragmentHelper, IViewHelper, IMrLogger,
+        IContextHelper {
+
+    /* ================== */
+    /* ====== IBundleArgs */
 
     /**
      * Get String Type arguments from {@link #getArguments()}.
@@ -90,6 +98,11 @@ public abstract class BaseFragment extends Fragment implements IBundleArgs, IFra
         return BundleArgs.getSerializableArg(getArguments(), key);
     }
 
+
+    /* ================== */
+    /* ====== IFragmentHelper */
+
+
     /**
      * Replaces container's Fragment with the specified Fragment using the Child Fragment Manager.
      * Call requires api level 17.
@@ -114,6 +127,25 @@ public abstract class BaseFragment extends Fragment implements IBundleArgs, IFra
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack);
     }
 
+    @Override
+    @TargetApi(17)
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        FragmentManager mgr = getChildFragmentManager();
+        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, enterAnim, exitAnim,
+                popEnterAnim, popExitAnim);
+    }
+
+    @Override
+    @TargetApi(17)
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        FragmentManager mgr = getChildFragmentManager();
+        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, enterAnim, exitAnim, popEnterAnim, popExitAnim);
+    }
+
     /**
      * Finds Fragment by Tag from the Child Fragment Manager. Call requires api level 17.
      * If the specified type does not match the found fragment type, it'll throw
@@ -129,10 +161,58 @@ public abstract class BaseFragment extends Fragment implements IBundleArgs, IFra
         return FragmentUtils.findFragmentByTag(mgr, fragmentTag, returnType);
     }
 
+
+    /* ================== */
+    /* ====== IViewHelper */
+
+
     @Nullable
     @Override
     public <T extends View> T findView(View from, int viewResId) {
 
         return ViewUtils.findView(from, viewResId);
+    }
+
+
+    /* ================== */
+    /* ====== IMrLogger */
+
+
+    @Override
+    public String getLogTag() {
+
+        return getClass().getSimpleName();
+    }
+
+    @Override
+    public void debug(String message) {
+
+        String tag = getLogTag();
+        MrLogger.debug(tag, message, shouldLog());
+    }
+
+    @Override
+    public void info(String message) {
+
+        String tag = getLogTag();
+        MrLogger.info(tag, message, shouldLog());
+    }
+
+    @Override
+    public void error(String message) {
+
+        String tag = getLogTag();
+        MrLogger.error(tag, message, shouldLog());
+    }
+
+
+    /* ================== */
+    /* ====== IContextHelper */
+
+
+    @Override
+    public boolean isContextValid() {
+
+        return ActivityUtils.isContextValid(getActivity());
     }
 }

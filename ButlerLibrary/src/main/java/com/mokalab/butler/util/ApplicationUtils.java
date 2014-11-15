@@ -1,8 +1,12 @@
 package com.mokalab.butler.util;
 
+import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+
+import java.util.Locale;
 
 /**
  * Contains helper functions related to an Application or Application Class.
@@ -14,6 +18,18 @@ public class ApplicationUtils {
     private ApplicationUtils() {}
 
     public static final String GOOGLE_MAPS_PACKAGE_NAME = "com.google.android.apps.maps";
+
+    /**
+     * Checks if a Context is not null and returns true, otherwise false.
+     */
+    public static boolean isContextValid(Application context) {
+
+        if (context != null) {
+            return true;
+        }
+
+        return false;
+    }
 
     /**
      * Checks if Google Map is Installed.
@@ -70,6 +86,8 @@ public class ApplicationUtils {
      */
     public static String getVersionName(Context context) {
 
+        if (!ContextUtils.isContextValid(context)) return "";
+
         String version = null;
         try {
 
@@ -78,5 +96,22 @@ public class ApplicationUtils {
 
         } catch (PackageManager.NameNotFoundException e) {}
         return version;
+    }
+
+    /**
+     * Returns the device language settings
+     */
+    public static String getLocaleLanguage() {
+        return Locale.getDefault().getDisplayLanguage();
+    }
+
+
+    /**
+     * Triggers hide action on the InputManager.
+     * @param activity required to determine where the current focus is at
+     */
+    public static void hideSoftKeyboard(Activity activity) {
+
+        ViewUtils.hideSoftKeyboard(activity);
     }
 }

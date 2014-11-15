@@ -1,9 +1,13 @@
 package com.mokalab.butler.util;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mokalab.butler.interfaces.ITypeFaceStyleable;
 
@@ -12,7 +16,8 @@ import com.mokalab.butler.interfaces.ITypeFaceStyleable;
  */
 public class ViewUtils {
 
-    private ViewUtils() {}
+    private ViewUtils() {
+    }
 
     /**
      * Use this method to Find a View by it's Id. The 'from' View is required. The is the
@@ -30,9 +35,9 @@ public class ViewUtils {
     /**
      * Converts Dp to Px
      */
-    public static float convertDpToPx(Context context, float dp) {
+    public static int convertDpToPx(Context context, float dp) {
 
-        return NumberUtils.convertDpToPx(context, dp);
+        return (int) NumberUtils.convertDpToPx(context, dp);
     }
 
     /**
@@ -40,7 +45,7 @@ public class ViewUtils {
      */
     public static float convertPxToDp(Context context, float px) {
 
-        return NumberUtils.convertPxToDp(context, px);
+        return (int) NumberUtils.convertPxToDp(context, px);
     }
 
     /**
@@ -68,5 +73,49 @@ public class ViewUtils {
     public static void manageAttributes(TextView view, AttributeSet attrs, ITypeFaceStyleable typeFaceStyleable) {
 
         TypefaceHelper.manageAttributes(view, attrs, typeFaceStyleable);
+    }
+
+    /**
+     * Returns the Height of the ActionBar in Pixels from android.R.attr.actionBarSize.
+     */
+    public static int getActionBarSizePixels(Context context) {
+
+        final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
+        int actionbarSize = (int) styledAttributes.getDimension(0, 0);
+        styledAttributes.recycle();
+
+        return actionbarSize;
+    }
+
+    /**
+     * Shows short Toast message.
+     */
+    public static void toastShort(Context context, String message) {
+
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Shows short Toast message.
+     */
+    public static void toastLong(Context context, String message) {
+
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+    }
+
+    /**
+     * Triggers hide action on the InputManager.
+     * @param activity required to determine where the current focus is at
+     */
+    public static void hideSoftKeyboard(Activity activity) {
+
+        if (!ActivityUtils.isContextValid(activity)) return;
+
+        View currentFocus = activity.getCurrentFocus();
+
+        if (currentFocus != null) {
+            InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
+            inputMethodManager.hideSoftInputFromWindow(currentFocus.getWindowToken(), 0);
+        }
     }
 }
