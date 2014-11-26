@@ -405,6 +405,24 @@ public class JsonUtils {
     }
 
     /**
+     * checks if passed string is a valid json
+     * @param string
+     * @return
+     */
+    public static boolean isStringValidJson(final String string){
+        JSONObject json=null;
+        if(string!=null)
+        {
+            try{
+                json=new JSONObject(string);
+            }catch(JSONException e){
+            }catch(Exception e){
+            }
+        }
+        return json!=null;
+    }
+
+    /**
      * Just logs an info.
      */
     private static void logInfo(String tag, boolean shouldLog, String message) {

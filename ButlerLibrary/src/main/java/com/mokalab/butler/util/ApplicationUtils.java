@@ -114,4 +114,6 @@ public class ApplicationUtils {
 
         ViewUtils.hideSoftKeyboard(activity);
     }
+
+    //TODO create helper function for dimensions
 }
