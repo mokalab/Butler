@@ -18,7 +18,9 @@ import java.util.TreeSet;
 import java.util.UUID;
 import java.util.regex.Pattern;
 
-
+/**
+ * @author Antonio Tari
+ */
 public class PhoneInfoUtil 
 {
 	//save keys
