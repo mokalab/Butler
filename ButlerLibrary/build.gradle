@@ -30,4 +30,5 @@ dependencies {
     //required by xml2json
     compile 'commons-collections:commons-collections:3.2.1'
     compile 'com.google.code.gson:gson:2.3.+'
+    compile 'org.apache.commons:commons-lang3:3.3.+'
 }
