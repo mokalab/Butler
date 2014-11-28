@@ -31,4 +31,8 @@ dependencies {
     compile 'commons-collections:commons-collections:3.2.1'
     compile 'com.google.code.gson:gson:2.3.+'
     compile 'org.apache.commons:commons-lang3:3.3.+'
+
+    compile 'com.squareup.dagger:dagger:1.2.+'
+    compile 'javax.inject:javax.inject:1@jar'
+    provided 'com.squareup.dagger:dagger-compiler:1.2.+'
 }
