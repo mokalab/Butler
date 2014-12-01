@@ -4,6 +4,10 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.mokalab.butler.util.ShortToStringStyle;
+
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 import java.io.Serializable;
 
 /**
@@ -40,6 +44,18 @@ public class ErrorInfo implements Parcelable {
 
     public Throwable getException() {
         return mException;
+    }
+
+    @Override
+    public String toString() {
+        // Note: do not use reflectionToString() because we want these names kept after obfuscation.
+        return new ToStringBuilder(this, new ShortToStringStyle())
+                .append("errorCode", mErrorCode)
+                .append("mDebugMessage", mDebugMessage)
+                .append("mUserMessage", mUserMessage)
+                .append("mContextData", mContextData)
+                .append("mException", mException)
+                .build();
     }
 
     /**
@@ -105,11 +121,27 @@ public class ErrorInfo implements Parcelable {
         }
 
         /**
-         * Convienience method for creating a bundle and adding a serializable to it.
+         * Convenience method for creating a bundle and adding a serializable to it.
          */
         public Builder setContextData(Serializable contextData) {
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", contextData);
+            mError.mContextData = bundle;
+            return this;
+        }
+
+        /**
+         * Chains ErrorInfo using contextData. Copies debugMessage and userMessage if it has not been set yet.
+         */
+        public Builder setContextData(ErrorInfo contextData) {
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("caused_by", contextData);
+            if (mError.mDebugMessage == null) {
+                mError.mDebugMessage = contextData.mDebugMessage;
+            }
+            if (mError.mUserMessage == null) {
+                mError.mUserMessage = contextData.mUserMessage;
+            }
             mError.mContextData = bundle;
             return this;
         }

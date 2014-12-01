@@ -1,4 +1,14 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.+'
+    }
+}
+
 apply plugin: 'com.android.library'
+apply plugin: 'com.neenbedankt.android-apt'
 
 android {
     compileSdkVersion 19
@@ -35,4 +45,6 @@ dependencies {
     compile 'com.squareup.dagger:dagger:1.2.+'
     compile 'javax.inject:javax.inject:1@jar'
     provided 'com.squareup.dagger:dagger-compiler:1.2.+'
+    apt 'com.squareup.dagger:dagger-compiler:1.2.+'
+
 }
