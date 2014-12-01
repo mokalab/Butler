@@ -1,6 +1,8 @@
-package com.mokalab.butler.error;
+package com.mokalab.butler.injection;
 
 import android.content.Context;
+
+import com.mokalab.butler.error.BuildInfo;
 
 import dagger.Module;
 import dagger.Provides;
