@@ -21,12 +21,15 @@ public class GridDividerDecoration extends RecyclerView.ItemDecoration {
     private Drawable mDivider;
     private int mInsets;
 
-    public GridDividerDecoration(Context context) {
+    /**
+     * @param insets Insets in pixels.
+     */
+    public GridDividerDecoration(Context context, int insets) {
         TypedArray a = context.obtainStyledAttributes(ATTRS);
         mDivider = a.getDrawable(0);
         a.recycle();
 
-        mInsets = context.getResources().getDimensionPixelSize(R.dimen.card_insets);
+        mInsets = insets;
     }
 
     @Override
