@@ -15,6 +15,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -63,8 +64,9 @@ public class FileUtil
 
     public static String storageDir(Context context )
     {
-        File mediaStorageDir = context.getFilesDir();
-        return mediaStorageDir.getPath() + File.separator;
+        return extStorageDir(context);
+        //File mediaStorageDir = context.getFilesDir();
+        //return mediaStorageDir.getPath() + File.separator;
     }
 
 	//-----------------------------------------------------------------------------
@@ -393,12 +395,12 @@ public class FileUtil
 				output.writeObject(object);
 			}
 			finally{
-				file.flush();
-				file.close();
+				//file.flush();
+				//file.close();
 				//buffer.flush();
 				//buffer.close();
 				//output.flush();
-				//output.close();
+				output.close();
 			}
 		}
 		catch(IOException ex){
@@ -406,40 +408,45 @@ public class FileUtil
 		}
 	}
 
+    public static boolean fileExistsAndCanRead(String fileName){
+        File f = new File(fileName);
+        return(f.exists() && !f.isDirectory() && f.canRead());
+    }
+
 	//-----------------------------------------------------------------------------
 	//-----------------
 	public Object readSerializable(Context context,String filename)
 	{
-		String filePath=storageDir(context)+filename;
-		//TODO check if file exists
-//		File fil = new File(filePath);
-//		if(!fil.exists()) {
-//			return null;
-//		}
-		
-		Object recoveredQuarks=null;
+        if( filename==null || context==null)return null;
+
+        String filePath=storageDir(context)+filename;
+        if(!fileExistsAndCanRead(filePath)){
+            return null;
+        }
+
+        Object recoveredQuarks=null;
 		try{
 			//use buffering
-			InputStream file = new FileInputStream(filePath);
-			InputStream buffer = new BufferedInputStream(file);
-			ObjectInput input = new ObjectInputStream (buffer);
+			InputStream fis = new FileInputStream(filePath);
+			InputStream buffer = new BufferedInputStream(fis);
+			ObjectInput ois = new ObjectInputStream (buffer);
 			try{
 				//deserialize the List
-				recoveredQuarks = input.readObject();
+				recoveredQuarks = ois.readObject();
 			}
 			finally{
-				input.close();
+                ois.close();
 			}
 		}
 		catch(ClassNotFoundException ex){
 			Log.error("readSerializable",ex);
-
 		}
+        catch (EOFException ex){
+            Log.error("readSerializable", "EOFException",ex);
+        }
 		catch(IOException ex){
 			Log.error("readSerializable",ex);
-
 		}
-
 		return recoveredQuarks;
 	}
 
@@ -545,10 +552,6 @@ public class FileUtil
 	 * to get the list from the parcelable array:
 	 * Parcelable[] parcelableArray=FileUtil.getInstance().readParcelableArray(getApplicationContext(),"parcelablearray",VideaAsset[].class);
 	 * List<VideaAsset> results2=Arrays.asList((VideaAsset[])parcelableArray);
-	 *     
-	 * @param context
-	 * @param filename
-	 * @param parcelableArray
 	 */
 	public synchronized Parcelable[] readParcelableArray(Context context,String filename,Class theClass){
 		Parcelable[] parcelableArray = null;

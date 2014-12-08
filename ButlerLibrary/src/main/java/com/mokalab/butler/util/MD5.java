@@ -1,12 +1,11 @@
 package com.mokalab.butler.util;
 
+import android.content.Context;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
-import java.util.Map;
-
-import android.content.Context;
 
 public class MD5 
 {
@@ -160,29 +159,40 @@ public class MD5
 			FileUtil.getInstance().storeSerializable(context, MD5INT_FILENAME, _md5IntCache);
 		}
 	}
-	
+
+    private static boolean checkExists(){
+        return FileUtil.fileExistsAndCanRead(MD5_FILENAME);
+        //File f = new File(MD5_FILENAME);
+        //return(f.exists() && !f.isDirectory() && f.canRead());
+    }
+
 	public static HashMap<String,String> readMD5s(Context context){
 		try{
-			_md5Cache=(HashMap<String,String>)FileUtil.getInstance().readSerializable(context, MD5_FILENAME);
-			if(_md5Cache==null){
-				_md5Cache=new HashMap<String,String>();
-			}
-			return _md5Cache;
+            if(checkExists()) {
+                _md5Cache = (HashMap<String, String>) FileUtil.getInstance().readSerializable(context, MD5_FILENAME);
+                if (_md5Cache == null) {
+                    _md5Cache = new HashMap<String, String>();
+                }
+                return _md5Cache;
+            }
 		}catch(Exception e1){
-			return null;
+            Log.error(e1);
 		}
-
+        return null;
 	}
 
 	public static HashMap<String,Integer> readMD5Ints(Context context){
 		try{
-			_md5IntCache=(HashMap<String,Integer>)FileUtil.getInstance().readSerializable(context, MD5INT_FILENAME);
-			if(_md5IntCache==null){
-				_md5IntCache=new HashMap<String,Integer>();
-			}
-			return _md5IntCache;
-		}catch(Exception e1){
-			return null;
-		}
+            if(checkExists()) {
+                _md5IntCache = (HashMap<String, Integer>) FileUtil.getInstance().readSerializable(context, MD5INT_FILENAME);
+                if (_md5IntCache == null) {
+                    _md5IntCache = new HashMap<String, Integer>();
+                }
+                return _md5IntCache;
+            }
+        }catch(Exception e1){
+            Log.error(e1);
+        }
+        return null;
 	}
 }
