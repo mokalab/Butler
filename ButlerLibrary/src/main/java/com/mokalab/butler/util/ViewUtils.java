@@ -16,8 +16,7 @@ import com.mokalab.butler.interfaces.ITypeFaceStyleable;
  */
 public class ViewUtils {
 
-    private ViewUtils() {
-    }
+    private ViewUtils() { }
 
     /**
      * Use this method to Find a View by it's Id. The 'from' View is required. The is the
@@ -70,7 +69,7 @@ public class ViewUtils {
      * Call this from the constructor that provides attributes.
      * It will set the type face of the View from the AttributeSet.
      */
-    public static void manageAttributes(TextView view, AttributeSet attrs, ITypeFaceStyleable typeFaceStyleable) {
+    public static void setTypeFaceFromAttributes(TextView view, AttributeSet attrs, ITypeFaceStyleable typeFaceStyleable) {
 
         TypefaceHelper.manageAttributes(view, attrs, typeFaceStyleable);
     }
