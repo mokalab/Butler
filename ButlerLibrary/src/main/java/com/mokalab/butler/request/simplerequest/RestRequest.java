@@ -110,6 +110,7 @@ public abstract class RestRequest<P> extends Request<String, P> {
                 }
 
                 response_code = con.getResponseCode();
+                onConnectionMade(response_code, con);
                 InputStream in = con.getInputStream();
 
                 if (GZIP_ENCODING.equals(con.getContentEncoding())) {
@@ -170,6 +171,16 @@ public abstract class RestRequest<P> extends Request<String, P> {
         }
 
         return null;
+    }
+
+    /**
+     * Called right after connect(). Use it to determine headers or anything before parsing of the content.
+     * @param response_code
+     * @param con
+     */
+    protected void onConnectionMade(int response_code, HttpURLConnection con) {
+
+        /* NO BASE IMPL */
     }
 
     /**
