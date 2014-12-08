@@ -2,6 +2,7 @@ package com.mokalab.butler.util;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.text.Html;
 
 /**
@@ -10,6 +11,29 @@ import android.text.Html;
 public class SharingUtils {
 
     private SharingUtils() {}
+
+    /**
+     * Launch a Web Intent to show a url in an external Web App. This will call your Activity's or Fragment's
+     * {@link android.app.Activity#onActivityResult(int, int, android.content.Intent)}.
+     */
+    public static void startWebIntent(Activity activity, String link) {
+
+        if (!ActivityUtils.isContextValid(activity)) return;
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+        activity.startActivity(intent);
+    }
+
+    /**
+     * Launch a Web Intent to show a url in an external Web App.
+     */
+    public static void startWebIntent(Activity activity, String link, int requestCode) {
+
+        if (!ActivityUtils.isContextValid(activity)) return;
+
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(link));
+        activity.startActivityForResult(intent, requestCode);
+    }
 
     /**
      * Starts a Sharing Intent with the provided subject and url.
