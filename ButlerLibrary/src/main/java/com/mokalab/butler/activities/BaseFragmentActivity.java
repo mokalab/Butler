@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
+ * TODO: JAVA DOC
+ *
  * Created by Pirdad S on 2014-07-22.
  */
 public abstract class BaseFragmentActivity extends FragmentActivity implements IBundleArgs, IFragmentHelper, IViewHelper,
