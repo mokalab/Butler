@@ -153,22 +153,29 @@ public class NetworkUtils {
         return "";
     }
 
+    /**
+     * Checks whether the user is currently connected to a Network.
+     * <br>
+     * Note: For extended Connection Information, please use
+     * {@link com.mokalab.butler.util.Connectivity}.
+     */
     public static boolean isConnectedToNetwork(Context c) {
 
         ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo ni = cm.getActiveNetworkInfo();
+
         if (ni == null){
             return false;
         }
 
         try{
+
             return (ni.isConnected());// || ni.isConnectedOrConnecting());
-        }catch(NullPointerException npe){
-        }catch(Exception npe){}
+
+        } catch(NullPointerException npe){
+        } catch(Exception npe){}
 
         return false;
-
     }
-
 }
