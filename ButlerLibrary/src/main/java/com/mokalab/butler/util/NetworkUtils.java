@@ -178,4 +178,24 @@ public class NetworkUtils {
 
         return false;
     }
+
+    /**
+     * Checks whether the specified networkType is connected.
+     * android.permission.ACCESS_NETWORK_STATE should be added to an AndroidManifest.xml.
+     * @param ctx a Context
+     * @param networkType any Network Type
+     * @return true if specified networkType connected, false otherwise
+     */
+    public static boolean isConnectedToSpecifiedNetwork(Context ctx, int networkType) {
+
+        ConnectivityManager connectivityManager = (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(networkType);
+
+        if (networkInfo == null) {
+            return false;
+        } else if (networkInfo.isConnected()) {
+            return true;
+        }
+        return false;
+    }
 }
