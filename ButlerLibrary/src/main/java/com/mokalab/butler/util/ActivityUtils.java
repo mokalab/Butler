@@ -7,6 +7,7 @@ import android.content.Context;
 /**
  * This class provides helper/utilities functions related to Activities.
  *
+ * <br/><br/>
  * Created by Pirdad S on 2014-08-13.
  */
 public class ActivityUtils {
