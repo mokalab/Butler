@@ -1,1 +1,1 @@
-include ':ButlerTest', ':ButlerLibrary', ':android-volley'
+include ':ButlerTest', ':ButlerLibrary'
