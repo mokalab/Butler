@@ -11,7 +11,7 @@ import android.telephony.TelephonyManager;
  * Added by Pirdad Sakhizada<br>
  * Author emil http://stackoverflow.com/users/220710/emil
  */
-public class Connectivity {
+public class ConnectivityUtils {
 
     /**
      * Get the network info
@@ -27,7 +27,7 @@ public class Connectivity {
      */
     public static boolean isConnected(Context context) {
 
-        NetworkInfo info = Connectivity.getNetworkInfo(context);
+        NetworkInfo info = ConnectivityUtils.getNetworkInfo(context);
         return (info != null && info.isConnected());
     }
 
@@ -36,7 +36,7 @@ public class Connectivity {
      */
     public static boolean isConnectedWifi(Context context) {
 
-        NetworkInfo info = Connectivity.getNetworkInfo(context);
+        NetworkInfo info = ConnectivityUtils.getNetworkInfo(context);
         return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_WIFI);
     }
 
@@ -45,7 +45,7 @@ public class Connectivity {
      */
     public static boolean isConnectedMobile(Context context) {
 
-        NetworkInfo info = Connectivity.getNetworkInfo(context);
+        NetworkInfo info = ConnectivityUtils.getNetworkInfo(context);
         return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_MOBILE);
     }
 
@@ -54,8 +54,8 @@ public class Connectivity {
      */
     public static boolean isConnectedFast(Context context) {
 
-        NetworkInfo info = Connectivity.getNetworkInfo(context);
-        return (info != null && info.isConnected() && Connectivity.isConnectionFast(info.getType(), info.getSubtype()));
+        NetworkInfo info = ConnectivityUtils.getNetworkInfo(context);
+        return (info != null && info.isConnected() && ConnectivityUtils.isConnectionFast(info.getType(), info.getSubtype()));
     }
 
     /**

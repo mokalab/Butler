@@ -1,7 +1,6 @@
 package com.mokalab.butler.util;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import org.apache.http.conn.util.InetAddressUtils;
@@ -157,39 +156,26 @@ public class NetworkUtils {
      * Checks whether the user is currently connected to a Network.
      * <br>
      * Note: For extended Connection Information, please use
-     * {@link com.mokalab.butler.util.Connectivity}.
+     * {@link ConnectivityUtils}.
      */
-    public static boolean isConnectedToNetwork(Context c) {
+    public static boolean isConnectedToNetwork(Context context) {
 
-        ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo ni = cm.getActiveNetworkInfo();
-
-        if (ni == null){
-            return false;
-        }
-
-        try{
-
-            return (ni.isConnected());// || ni.isConnectedOrConnecting());
-
-        } catch(NullPointerException npe){
-        } catch(Exception npe){}
-
-        return false;
+        return ConnectivityUtils.isConnected(context);
     }
 
     /**
+     * TODO: THIS FUNCTION DOESN'T WORK YET... HANDLE THIS
+     * </br>
      * Checks whether the specified networkType is connected.
      * android.permission.ACCESS_NETWORK_STATE should be added to an AndroidManifest.xml.
      * @param ctx a Context
      * @param networkType any Network Type
      * @return true if specified networkType connected, false otherwise
      */
+    @Deprecated
     public static boolean isConnectedToSpecifiedNetwork(Context ctx, int networkType) {
 
-        ConnectivityManager connectivityManager = (ConnectivityManager)ctx.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(networkType);
+        NetworkInfo networkInfo = ConnectivityUtils.getNetworkInfo(ctx);
 
         if (networkInfo == null) {
             return false;
