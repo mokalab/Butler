@@ -27,6 +27,7 @@ public class ViewUtils {
     @SuppressWarnings("unchecked")
     public static <T extends View> T findView(View from, int id) {
 
+
         if (from == null) return null;
         return (T) from.findViewById(id);
     }
