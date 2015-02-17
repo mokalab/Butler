@@ -5,18 +5,16 @@ android {
     buildToolsVersion "20.0.0"
 
     defaultConfig {
-        applicationId "com.mokalab.butler"
         minSdkVersion 11
         targetSdkVersion 19
         versionCode 1
         versionName "0.0.1"
         renderscriptTargetApi 19
-        renderscriptSupportMode true
         renderscriptSupportModeEnabled true
     }
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
