@@ -181,7 +181,7 @@ public abstract class BaseFragment extends Fragment implements IBundleArgs, IFra
     @Override
     public String getLogTag() {
 
-        return getClass().getSimpleName();
+        return BaseFragment.class.getSimpleName();
     }
 
     @Override
