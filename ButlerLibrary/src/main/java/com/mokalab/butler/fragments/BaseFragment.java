@@ -215,4 +215,18 @@ public abstract class BaseFragment extends Fragment implements IBundleArgs, IFra
 
         return ActivityUtils.isContextValid(getActivity());
     }
+
+    /**
+     * Returns true if this fragment handled the onBackPressed.<br><br>
+     * NOTE for the implementer:<br>
+     * Returning true means you've handled the back-press and that you don't want
+     * {@link com.mokalab.butler.fragments.BaseFragment} to handle it afterwards.
+     * <br>
+     * Returning false means you want {@link com.mokalab.butler.fragments.BaseFragment} to handle it even
+     * if you've handled it on this fragment.
+     */
+    public boolean onBackPressed() {
+
+        return false;
+    }
 }
