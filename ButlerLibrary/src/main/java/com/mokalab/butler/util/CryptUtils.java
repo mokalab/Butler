@@ -1,6 +1,10 @@
 package com.mokalab.butler.util;
 
 
+import android.text.TextUtils;
+
+import org.apache.commons.codec.binary.Hex;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.jetbrains.annotations.Nullable;
 
 import java.security.MessageDigest;
@@ -144,5 +148,30 @@ public class CryptUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Using Apache Commons, this function can generate a sha1 hash of the provided text.
+     * @param textToSign
+     * @return
+     */
+    public static String signWithSha1(String textToSign) {
+
+        if (TextUtils.isEmpty(textToSign)) return null;
+
+        //return DigestUtils.sha1Hex(textToSign);
+        /*
+         * THE FOLLOWING DOESN'T WORK DUE TO:
+         * ANDROID NOT HAVING encodeHexString() FUNCTION.
+         */
+
+        /*
+         * INSTEAD WE CAN DO THE FOLLOWING:
+         * BECAUSE ALTHOUGH ANDROID DOESN'T HAVE encodeHexString(),
+         * IT DOES HAVE encodeHex() WHICH GIVES THE SAME RESULT.
+         * StackOverFlow: http://stackoverflow.com/a/9284092
+         */
+
+        return new String(Hex.encodeHex(DigestUtils.sha1(textToSign)));
     }
 }
