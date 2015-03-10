@@ -25,7 +25,7 @@ public class ServiceUtils {
     /**
      * Checks whether the specified service is running.
      */
-    private boolean isServiceRunning(Context context, Class<? extends Service> serviceClass) {
+    public static boolean isServiceRunning(Context context, Class<? extends Service> serviceClass) {
 
         if (serviceClass == null) return false;
         if (ContextUtils.isContextInvalid(context)) return false;
