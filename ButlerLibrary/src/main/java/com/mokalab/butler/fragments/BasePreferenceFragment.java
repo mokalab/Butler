@@ -1,7 +1,7 @@
 package com.mokalab.butler.fragments;
 
 import android.os.Parcelable;
-import android.support.v4.app.DialogFragment;
+import android.preference.PreferenceFragment;
 import android.view.View;
 
 import com.mokalab.butler.interfaces.IBundleArgs;
@@ -21,15 +21,8 @@ import java.util.ArrayList;
 
 /**
  * TODO: JAVA DOC
- *
- * <br><br>
- * Created by Pirdad S on 2014-07-22.
  */
-public abstract class BaseDialogFragment extends DialogFragment implements
-        IBundleArgs,
-        IViewHelper,
-        IMrLogger,
-        IContextHelper {
+public abstract class BasePreferenceFragment extends PreferenceFragment implements IBundleArgs, IViewHelper, IMrLogger, IContextHelper {
 
     /* ================== */
     /* ====== IBundleArgs */
