@@ -1,10 +1,13 @@
-package com.mokalab.butler.fragments;
+package com.mokalab.butler.activities;
 
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.content.Intent;
+import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.view.View;
 
+import com.mokalab.butler.fragments.BaseFragment;
 import com.mokalab.butler.interfaces.IBundleArgs;
 import com.mokalab.butler.interfaces.IContextHelper;
 import com.mokalab.butler.interfaces.IFragmentHelper;
@@ -25,12 +28,10 @@ import java.util.ArrayList;
 /**
  * TODO: JAVA DOC
  *
- * <br><br>
- * Created by Pirdad S on 2014-07-22.
  */
-public abstract class BaseSupportFragment extends Fragment implements
+public abstract class BaseActivity extends Activity implements
         IBundleArgs,
-        IFragmentHelper<Fragment>,
+        IFragmentHelper<BaseFragment>,
         IViewHelper,
         IMrLogger,
         IContextHelper {
@@ -39,66 +40,77 @@ public abstract class BaseSupportFragment extends Fragment implements
     /* ====== IBundleArgs */
 
     /**
-     * Get String Type arguments from {@link #getArguments()}.
+     * Returns Bundle from getIntent().
+     */
+    protected Bundle getBundle() {
+
+        Intent intent = getIntent();
+        if (intent == null) return null;
+
+        return intent.getExtras();
+    }
+
+    /**
+     * Get String Type arguments from {@link #getIntent()}.
      */
     @Override
     public String getStringArg(@NotNull String key, String def) {
 
-        return BundleArgs.getStringArg(getArguments(), key, def);
+        return BundleArgs.getStringArg(getBundle(), key, def);
     }
 
     /**
-     * Get Integer Type arguments from {@link #getArguments()}.
+     * Get Integer Type arguments from {@link #getIntent()}.
      */
     @Override
     public int getIntArg(@NotNull String key, int def) {
 
-        return BundleArgs.getIntArg(getArguments(), key, def);
+        return BundleArgs.getIntArg(getBundle(), key, def);
     }
 
     /**
-     * Get Integer Array Type arguments from {@link #getArguments()}.
+     * Get Integer Array Type arguments from {@link #getIntent()}.
      */
     @Override
     public int[] getIntArrayArg(@NotNull String key, int[] def) {
 
-        return BundleArgs.getIntArrayArg(getArguments(), key, def);
+        return BundleArgs.getIntArrayArg(getBundle(), key, def);
     }
 
     /**
-     * Get Boolean Type arguments from {@link #getArguments()}.
+     * Get Boolean Type arguments from {@link #getIntent()}.
      */
     @Override
     public boolean getBooleanArg(@NotNull String key, boolean def) {
 
-        return BundleArgs.getBooleanArg(getArguments(), key, def);
+        return BundleArgs.getBooleanArg(getBundle(), key, def);
     }
 
     /**
-     * Get Parcelable Type arguments from {@link #getArguments()}.
+     * Get Parcelable Type arguments from {@link #getIntent()}.
      */
     @Override
     public <T extends Parcelable> T getParcelableArg(@NotNull String key) {
 
-        return BundleArgs.getParcelableArg(getArguments(), key);
+        return BundleArgs.getParcelableArg(getBundle(), key);
     }
 
     /**
-     * Get Parcelable ArrayList Type arguments from {@link #getArguments()}.
+     * Get Parcelable ArrayList Type arguments from {@link #getIntent()}.
      */
     @Override
     public <T extends Parcelable> ArrayList<T> getParcelableArrayListArg(@NotNull String key) {
 
-        return BundleArgs.getParcelableArrayListArg(getArguments(), key);
+        return BundleArgs.getParcelableArrayListArg(getBundle(), key);
     }
 
     /**
-     * Get Serializable Type arguments from {@link #getArguments()}.
+     * Get Serializable Type arguments from {@link #getIntent()}.
      */
     @Override
     public Serializable getSerializableArg(@NotNull String key) {
 
-        return BundleArgs.getSerializableArg(getArguments(), key);
+        return BundleArgs.getSerializableArg(getBundle(), key);
     }
 
 
@@ -107,59 +119,49 @@ public abstract class BaseSupportFragment extends Fragment implements
 
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag) {
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag) {
 
-        FragmentManager mgr = getChildFragmentManager();
+        FragmentManager mgr = getFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag);
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag, int enterAnim,
-                                int exitAnim, int popEnterAnim, int popExitAnim) {
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
 
-        FragmentManager mgr = getChildFragmentManager();
+        FragmentManager mgr = getFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, enterAnim, exitAnim, popEnterAnim, popExitAnim);
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack) {
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+                                boolean addToBackStack) {
 
-        FragmentManager mgr = getChildFragmentManager();
+        FragmentManager mgr = getFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack);
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
 
-        FragmentManager mgr = getChildFragmentManager();
+        FragmentManager mgr = getFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, enterAnim, exitAnim,
                 popEnterAnim, popExitAnim);
     }
 
+    /**
+     * {@inheritDoc }
+     * If the specified type does not match the found fragment type, it'll throw
+     * {@link IllegalArgumentException}.
+     */
     @Nullable
     @Override
-    public <F extends Fragment> F findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<F> returnType) {
+    public <T extends BaseFragment> T findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<T> returnType) {
 
-        FragmentManager mgr = getChildFragmentManager();
+        FragmentManager mgr = getFragmentManager();
         return FragmentUtils.findFragmentByTag(mgr, fragmentTag, returnType);
     }
-
-    /**
-     * Returns true if this fragment handled the onBackPressed.<br><br>
-     * NOTE for the implementer:<br>
-     * Returning true means you've handled the back-press and that you don't want
-     * {@link BaseSupportFragment} to handle it afterwards.
-     * <br>
-     * Returning false means you want {@link BaseSupportFragment} to handle it even
-     * if you've handled it on this fragment.
-     */
-    public boolean onBackPressed() {
-
-        /* DEFAULT */
-        return false;
-    }
-
 
 
     /* ================== */
@@ -173,6 +175,12 @@ public abstract class BaseSupportFragment extends Fragment implements
         return ViewUtils.findView(from, viewResId);
     }
 
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public <T extends View> T findView(int viewResId) {
+
+        return (T) findViewById(viewResId);
+    }
 
     /* ================== */
     /* ====== IMrLogger */
@@ -181,7 +189,7 @@ public abstract class BaseSupportFragment extends Fragment implements
     @Override
     public String getLogTag() {
 
-         /*
+        /*
          * CAN'T DO getClass() due to http://stackoverflow.com/a/18506329 bug in Android Studio
          */
         return ((Object) this).getClass().getSimpleName();
@@ -216,12 +224,12 @@ public abstract class BaseSupportFragment extends Fragment implements
     @Override
     public boolean isContextValid() {
 
-        return ContextUtils.isContextValid(getActivity());
+        return ContextUtils.isContextValid(this);
     }
 
     @Override
     public boolean isContextInvalid() {
 
-        return ContextUtils.isContextInvalid(getActivity());
+        return ContextUtils.isContextInvalid(this);
     }
 }

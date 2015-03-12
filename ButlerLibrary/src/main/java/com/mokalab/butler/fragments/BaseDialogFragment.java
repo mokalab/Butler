@@ -8,8 +8,8 @@ import com.mokalab.butler.interfaces.IBundleArgs;
 import com.mokalab.butler.interfaces.IContextHelper;
 import com.mokalab.butler.interfaces.IMrLogger;
 import com.mokalab.butler.interfaces.IViewHelper;
-import com.mokalab.butler.util.ActivityUtils;
 import com.mokalab.butler.util.BundleArgs;
+import com.mokalab.butler.util.ContextUtils;
 import com.mokalab.butler.util.MrLogger;
 import com.mokalab.butler.util.ViewUtils;
 
@@ -113,7 +113,10 @@ public abstract class BaseDialogFragment extends DialogFragment implements IBund
     @Override
     public String getLogTag() {
 
-        return getClass().getSimpleName();
+        /*
+         * CAN'T DO getClass() due to http://stackoverflow.com/a/18506329 bug in Android Studio
+         */
+        return ((Object) this).getClass().getSimpleName();
     }
 
     @Override
@@ -141,10 +144,15 @@ public abstract class BaseDialogFragment extends DialogFragment implements IBund
     /* ================== */
     /* ====== IContextHelper */
 
+    @Override
+    public boolean isContextInvalid() {
+
+        return ContextUtils.isContextInvalid(getActivity());
+    }
 
     @Override
     public boolean isContextValid() {
 
-        return ActivityUtils.isContextValid(getActivity());
+        return ContextUtils.isContextValid(getActivity());
     }
 }

@@ -41,10 +41,4 @@ public interface IFragmentHelper<T> {
      */
     @Nullable
     public  <F extends T> F findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<F> returnType);
-
-    /**
-     * Android Fragments doesn't have onBackPressed() by default. This function adds it however,
-     * implementation must return true or false which represents if the fragment handled it or not.
-     */
-    public boolean onBackPressed();
 }

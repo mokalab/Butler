@@ -165,7 +165,6 @@ public abstract class BaseFragment extends Fragment implements
      * Returning false means you want the host to handle it even
      * if you've handled it on this fragment.
      */
-    @Override
     public boolean onBackPressed() {
 
         /* DEFAULT */
@@ -193,7 +192,10 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     public String getLogTag() {
 
-        return BaseSupportFragment.class.getSimpleName();
+        /*
+         * CAN'T DO getClass() due to http://stackoverflow.com/a/18506329 bug in Android Studio
+         */
+        return ((Object) this).getClass().getSimpleName();
     }
 
     @Override
