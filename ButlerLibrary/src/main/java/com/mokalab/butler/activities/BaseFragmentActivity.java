@@ -7,7 +7,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.view.View;
 
-import com.mokalab.butler.fragments.BaseFragment;
+import com.mokalab.butler.fragments.BaseSupportFragment;
 import com.mokalab.butler.interfaces.IBundleArgs;
 import com.mokalab.butler.interfaces.IContextHelper;
 import com.mokalab.butler.interfaces.IFragmentHelper;
@@ -116,14 +116,14 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
 
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag) {
+    public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag) {
 
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag);
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag,
                                 int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
 
         FragmentManager mgr = getSupportFragmentManager();
@@ -131,7 +131,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack) {
 
         FragmentManager mgr = getSupportFragmentManager();
@@ -139,7 +139,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
 
         FragmentManager mgr = getSupportFragmentManager();
@@ -154,7 +154,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
      */
     @Nullable
     @Override
-    public <T extends BaseFragment> T findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<T> returnType) {
+    public <T extends BaseSupportFragment> T findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<T> returnType) {
 
         FragmentManager mgr = getSupportFragmentManager();
         return FragmentUtils.findFragmentByTag(mgr, fragmentTag, returnType);

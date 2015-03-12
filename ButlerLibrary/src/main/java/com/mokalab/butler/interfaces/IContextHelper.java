@@ -12,4 +12,9 @@ public interface IContextHelper {
      * Implement this function to determine if the context is valid.
      */
     public boolean isContextValid();
+
+    /**
+     * Implement this function to determine if the context is in-valid.
+     */
+    public boolean isContextInvalid();
 }

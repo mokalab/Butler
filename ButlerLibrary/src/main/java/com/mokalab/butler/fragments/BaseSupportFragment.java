@@ -1,8 +1,8 @@
 package com.mokalab.butler.fragments;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
 
 import com.mokalab.butler.interfaces.IBundleArgs;
@@ -24,8 +24,11 @@ import java.util.ArrayList;
 
 /**
  * TODO: JAVA DOC
+ *
+ * <br><br>
+ * Created by Pirdad S on 2014-07-22.
  */
-public abstract class BaseFragment extends Fragment implements
+public abstract class BaseSupportFragment extends Fragment implements
         IBundleArgs,
         IFragmentHelper<Fragment>,
         IViewHelper,
@@ -103,25 +106,25 @@ public abstract class BaseFragment extends Fragment implements
     /* ====== IFragmentHelper */
 
 
-    /**
-     * Replaces container's Fragment with the specified Fragment using the Child Fragment Manager.
-     * Call requires api level 17.
-     */
     @Override
     public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag) {
 
-        FragmentManager mgr = getFragmentManager();
+        FragmentManager mgr = getChildFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag);
     }
 
-    /**
-     * Replaces container's Fragment with the specified Fragment using the Child Fragment Manager.
-     * Call requires api level 17.
-     */
+    @Override
+    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag, int enterAnim,
+                                int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        FragmentManager mgr = getChildFragmentManager();
+        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, enterAnim, exitAnim, popEnterAnim, popExitAnim);
+    }
+
     @Override
     public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack) {
 
-        FragmentManager mgr = getFragmentManager();
+        FragmentManager mgr = getChildFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack);
     }
 
@@ -129,30 +132,16 @@ public abstract class BaseFragment extends Fragment implements
     public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
 
-        FragmentManager mgr = getFragmentManager();
+        FragmentManager mgr = getChildFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, enterAnim, exitAnim,
                 popEnterAnim, popExitAnim);
     }
 
-    @Override
-    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
-                                int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
-
-        FragmentManager mgr = getFragmentManager();
-        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, enterAnim, exitAnim, popEnterAnim, popExitAnim);
-    }
-
-    /**
-     * Finds Fragment by Tag from the Child Fragment Manager. Call requires api level 17.
-     * If the specified type does not match the found fragment type, it'll throw
-     * {@link IllegalArgumentException}.
-     */
     @Nullable
     @Override
-    @SuppressWarnings("unchecked")
-    public <T extends Fragment> T findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<T> returnType) {
+    public <F extends Fragment> F findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<F> returnType) {
 
-        FragmentManager mgr = getFragmentManager();
+        FragmentManager mgr = getChildFragmentManager();
         return FragmentUtils.findFragmentByTag(mgr, fragmentTag, returnType);
     }
 
@@ -160,9 +149,9 @@ public abstract class BaseFragment extends Fragment implements
      * Returns true if this fragment handled the onBackPressed.<br><br>
      * NOTE for the implementer:<br>
      * Returning true means you've handled the back-press and that you don't want
-     * it's host to handle it afterwards.
+     * {@link BaseSupportFragment} to handle it afterwards.
      * <br>
-     * Returning false means you want the host to handle it even
+     * Returning false means you want {@link BaseSupportFragment} to handle it even
      * if you've handled it on this fragment.
      */
     @Override

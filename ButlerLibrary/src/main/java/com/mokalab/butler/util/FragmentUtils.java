@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Build;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -317,8 +318,10 @@ public class FragmentUtils {
 
         FragmentTransaction tr = fragmentManager.beginTransaction();
 
-        if (enterAnim > 0 || exitAnim > 0) {
-            tr.setCustomAnimations(enterAnim, exitAnim, popEnterAnim, popExitAnim);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            if (enterAnim > 0 || exitAnim > 0) {
+                tr.setCustomAnimations(enterAnim, exitAnim, popEnterAnim, popExitAnim);
+            }
         }
 
         if (fragmentTag == null) {

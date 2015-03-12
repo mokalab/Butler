@@ -1,9 +1,5 @@
 package com.mokalab.butler.interfaces;
 
-import android.view.View;
-
-import com.mokalab.butler.fragments.BaseFragment;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,29 +10,29 @@ import org.jetbrains.annotations.Nullable;
  * <br><br>
  * Created by Pirdad S on 2014-07-24.
  */
-public interface IFragmentHelper {
+public interface IFragmentHelper<T> {
 
     /**
      * Replace Fragment using FragmentManager.
      */
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag);
+    public void replaceFragment(int containerResId, @NotNull T fragment, @Nullable String fragmentTag);
 
     /**
      * Replace Fragment using FragmentManager.
      */
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull T fragment, @Nullable String fragmentTag,
                                 int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim);
 
     /**
      * Replace Fragment using FragmentManager.
      */
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull T fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack);
 
     /**
      * Replace Fragment using FragmentManager.
      */
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull T fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim);
 
     /**
@@ -44,11 +40,11 @@ public interface IFragmentHelper {
      * specified type.
      */
     @Nullable
-    public  <T extends BaseFragment> T findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<T> returnType);
+    public  <F extends T> F findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<F> returnType);
 
     /**
-     * Finds View by a specified resource id.
+     * Android Fragments doesn't have onBackPressed() by default. This function adds it however,
+     * implementation must return true or false which represents if the fragment handled it or not.
      */
-    @Nullable
-    public <T extends View> T findView(View from, int viewResId);
+    public boolean onBackPressed();
 }

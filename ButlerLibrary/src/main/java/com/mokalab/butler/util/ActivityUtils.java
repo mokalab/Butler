@@ -27,6 +27,14 @@ public class ActivityUtils {
     }
 
     /**
+     * Checks if a Context is not null and is not finishing and returns true, otherwise false.
+     */
+    public static boolean isContextInvalid(Activity context) {
+
+        return !isContextValid(context);
+    }
+
+    /**
      * Triggers hide action on the InputManager.
      * @param activity required to determine where the current focus is at
      */
