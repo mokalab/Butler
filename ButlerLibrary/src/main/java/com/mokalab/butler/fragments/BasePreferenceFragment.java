@@ -1,6 +1,7 @@
 package com.mokalab.butler.fragments;
 
 import android.os.Parcelable;
+import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.view.View;
 
@@ -20,9 +21,19 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * TODO: JAVA DOC
+ * Wrapper fragment for the {@link android.preference.PreferenceFragment}.
+ * Provides custom logic around native methods.
  */
 public abstract class BasePreferenceFragment extends PreferenceFragment implements IBundleArgs, IViewHelper, IMrLogger, IContextHelper {
+
+    /**
+     * Finds and returns a Preference Object based on it's key.
+     */
+    public Preference findPreference(int prefKey) {
+
+        return super.findPreference(getString(prefKey));
+    }
+
 
     /* ================== */
     /* ====== IBundleArgs */
