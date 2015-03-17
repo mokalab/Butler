@@ -43,7 +43,7 @@ public abstract class AdapterViewHolder<T> {
      * to cast the return of this method. <br><br>
      * <b>May throw ClassCastException if the passed id's type is not the same as T.</b>
      */
-    protected <T extends View> T findView(View from, int id) {
+    protected <V extends View> V findView(View from, int id) {
 
         return ViewUtils.findView(from, id);
     }
