@@ -77,8 +77,11 @@ public class ViewUtils {
 
     /**
      * Returns the Height of the ActionBar in Pixels from android.R.attr.actionBarSize.
+     * Returns 0 if the context is invalid.
      */
     public static int getActionBarSizePixels(Context context) {
+
+        if (ContextUtils.isContextInvalid(context)) return 0;
 
         final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
         int actionbarSize = (int) styledAttributes.getDimension(0, 0);
@@ -92,6 +95,7 @@ public class ViewUtils {
      */
     public static void toastShort(Context context, String message) {
 
+        if (ContextUtils.isContextInvalid(context)) return;
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
     }
 
@@ -100,6 +104,7 @@ public class ViewUtils {
      */
     public static void toastLong(Context context, String message) {
 
+        if (ContextUtils.isContextInvalid(context)) return;
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
 
