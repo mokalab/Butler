@@ -1,10 +1,15 @@
 package com.mokalab.butler.util;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
+
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
@@ -113,5 +118,41 @@ public class ApplicationUtils {
     public static void hideSoftKeyboard(Activity activity) {
 
         ViewUtils.hideSoftKeyboard(activity);
+    }
+
+    /**
+     * Returns the Application Meta Data bundle that is defined generally in the AndroidManifest.xml.
+     * Returns null if context invalid or there was an issue.
+     */
+    @Nullable
+    public static Bundle getAppMetaDataBundle(Context context) {
+
+        if (ContextUtils.isContextInvalid(context)) return null;
+
+        try {
+
+            PackageManager packageManager = context.getPackageManager();
+            ApplicationInfo ai = packageManager.getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+            return ai.metaData;
+
+        } catch (PackageManager.NameNotFoundException e) {}
+
+        return null;
+    }
+
+    /**
+     * Returns the Application Meta Data by defined key that is defined generally in the AndroidManifest.xml.
+     * Returns null if context invalid or there was an issue.
+     */
+    @Nullable
+    @TargetApi(12)
+    public static String getAppMetaData(Context context, String key) {
+
+        Bundle metaBundle = getAppMetaDataBundle(context);
+        if (metaBundle != null) {
+            return metaBundle.getString(key, null);
+        }
+
+        return null;
     }
 }

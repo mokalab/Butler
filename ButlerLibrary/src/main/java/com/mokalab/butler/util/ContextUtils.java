@@ -1,9 +1,13 @@
 package com.mokalab.butler.util;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
 import android.app.Service;
 import android.content.Context;
+import android.os.Bundle;
+
+import org.jetbrains.annotations.Nullable;
 
 /**
  * This class provides helper/utilities functions related to Contexts.
@@ -46,5 +50,26 @@ public class ContextUtils {
 
         /* TRUE IF CONTEXT IS NOT VALID */
         return (!isContextValid(context));
+    }
+
+    /**
+     * Returns the Application Meta Data bundle that is defined generally in the AndroidManifest.xml.
+     * Returns null if context invalid or there was an issue.
+     */
+    @Nullable
+    public static Bundle getAppMetaDataBundle(Context context) {
+
+        return ApplicationUtils.getAppMetaDataBundle(context);
+    }
+
+    /**
+     * Returns the Application Meta Data by defined key that is defined generally in the AndroidManifest.xml.
+     * Returns null if context invalid or there was an issue.
+     */
+    @TargetApi(12)
+    @Nullable
+    public static String getAppMetaData(Context context, String key) {
+
+        return ApplicationUtils.getAppMetaData(context, key);
     }
 }
