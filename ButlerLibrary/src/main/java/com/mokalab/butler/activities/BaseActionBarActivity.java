@@ -3,11 +3,11 @@ package com.mokalab.butler.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
-import com.mokalab.butler.fragments.BaseSupportFragment;
 import com.mokalab.butler.interfaces.IBundleArgs;
 import com.mokalab.butler.interfaces.IContextHelper;
 import com.mokalab.butler.interfaces.IFragmentHelper;
@@ -31,7 +31,7 @@ import java.util.ArrayList;
  */
 public abstract class BaseActionBarActivity extends ActionBarActivity implements
         IBundleArgs,
-        IFragmentHelper<BaseSupportFragment>,
+        IFragmentHelper<Fragment>,
         IViewHelper,
         IMrLogger,
         IContextHelper {
@@ -119,14 +119,14 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
 
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag) {
+    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag) {
 
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag);
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
                                 int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
 
         FragmentManager mgr = getSupportFragmentManager();
@@ -134,7 +134,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack) {
 
         FragmentManager mgr = getSupportFragmentManager();
@@ -142,7 +142,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
 
         FragmentManager mgr = getSupportFragmentManager();
@@ -157,7 +157,7 @@ public abstract class BaseActionBarActivity extends ActionBarActivity implements
      */
     @Nullable
     @Override
-    public <T extends BaseSupportFragment> T findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<T> returnType) {
+    public <T extends Fragment> T findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<T> returnType) {
 
         FragmentManager mgr = getSupportFragmentManager();
         return FragmentUtils.findFragmentByTag(mgr, fragmentTag, returnType);
