@@ -145,7 +145,7 @@ public class ApplicationUtils {
      * Returns null if context invalid or there was an issue.
      */
     @Nullable
-    @TargetApi(12)
+    @TargetApi(21)
     public static String getAppMetaData(Context context, String key) {
 
         Bundle metaBundle = getAppMetaDataBundle(context);
