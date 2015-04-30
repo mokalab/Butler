@@ -346,4 +346,38 @@ public class FragmentUtils {
 
         ViewUtils.hideSoftKeyboard(activity);
     }
+
+    /**
+     * Generates a unique id for the fragment.
+     */
+    public static String generateUniqueId(Fragment fragment) {
+
+        String strId = "";
+        if (fragment != null) {
+            strId = fragment.getClass().getSimpleName() + ":";
+        }
+
+        long min = 2000;
+        long max = Long.MAX_VALUE;
+        long id = NumberUtils.generateRandom(min, max);
+
+        return (strId + id);
+    }
+
+    /**
+     * Generates a unique id for the fragment.
+     */
+    public static String generateUniqueId(android.support.v4.app.Fragment fragment) {
+
+        String strId = "";
+        if (fragment != null) {
+            strId = fragment.getClass().getSimpleName() + ":";
+        }
+
+        long min = 2000;
+        long max = Long.MAX_VALUE;
+        long id = NumberUtils.generateRandom(min, max);
+
+        return (strId + id);
+    }
 }
