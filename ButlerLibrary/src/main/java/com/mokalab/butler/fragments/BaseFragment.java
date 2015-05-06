@@ -110,6 +110,8 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag) {
 
+        if (ContextUtils.isContextInvalid(getActivity())) return;
+
         FragmentManager mgr = getFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag);
     }
@@ -121,6 +123,8 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack) {
 
+        if (ContextUtils.isContextInvalid(getActivity())) return;
+
         FragmentManager mgr = getFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack);
     }
@@ -128,6 +132,8 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        if (ContextUtils.isContextInvalid(getActivity())) return;
 
         FragmentManager mgr = getFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, enterAnim, exitAnim,
@@ -137,6 +143,8 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
                                 int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        if (ContextUtils.isContextInvalid(getActivity())) return;
 
         FragmentManager mgr = getFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, enterAnim, exitAnim, popEnterAnim, popExitAnim);
@@ -151,6 +159,8 @@ public abstract class BaseFragment extends Fragment implements
     @Override
     @SuppressWarnings("unchecked")
     public <T extends Fragment> T findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<T> returnType) {
+
+        if (ContextUtils.isContextInvalid(getActivity())) return null;
 
         FragmentManager mgr = getFragmentManager();
         return FragmentUtils.findFragmentByTag(mgr, fragmentTag, returnType);

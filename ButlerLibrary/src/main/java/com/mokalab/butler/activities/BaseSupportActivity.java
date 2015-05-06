@@ -121,6 +121,8 @@ public abstract class BaseSupportActivity extends FragmentActivity implements
     @Override
     public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag) {
 
+        if (ContextUtils.isContextInvalid(this)) return;
+
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag);
     }
@@ -128,6 +130,8 @@ public abstract class BaseSupportActivity extends FragmentActivity implements
     @Override
     public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag,
                                 int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        if (ContextUtils.isContextInvalid(this)) return;
 
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, enterAnim, exitAnim, popEnterAnim, popExitAnim);
@@ -137,6 +141,8 @@ public abstract class BaseSupportActivity extends FragmentActivity implements
     public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack) {
 
+        if (ContextUtils.isContextInvalid(this)) return;
+
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack);
     }
@@ -144,6 +150,8 @@ public abstract class BaseSupportActivity extends FragmentActivity implements
     @Override
     public void replaceFragment(int containerResId, @NotNull BaseSupportFragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        if (ContextUtils.isContextInvalid(this)) return;
 
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, enterAnim, exitAnim,
@@ -158,6 +166,8 @@ public abstract class BaseSupportActivity extends FragmentActivity implements
     @Nullable
     @Override
     public <T extends BaseSupportFragment> T findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<T> returnType) {
+
+        if (ContextUtils.isContextInvalid(this)) return null;
 
         FragmentManager mgr = getSupportFragmentManager();
         return FragmentUtils.findFragmentByTag(mgr, fragmentTag, returnType);

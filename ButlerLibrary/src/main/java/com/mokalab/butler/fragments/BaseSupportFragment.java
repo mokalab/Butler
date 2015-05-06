@@ -109,6 +109,8 @@ public abstract class BaseSupportFragment extends Fragment implements
     @Override
     public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag) {
 
+        if (ContextUtils.isContextInvalid(getActivity())) return;
+
         FragmentManager mgr = getChildFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag);
     }
@@ -117,12 +119,16 @@ public abstract class BaseSupportFragment extends Fragment implements
     public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag, int enterAnim,
                                 int exitAnim, int popEnterAnim, int popExitAnim) {
 
+        if (ContextUtils.isContextInvalid(getActivity())) return;
+
         FragmentManager mgr = getChildFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, enterAnim, exitAnim, popEnterAnim, popExitAnim);
     }
 
     @Override
     public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag, boolean addToBackStack) {
+
+        if (ContextUtils.isContextInvalid(getActivity())) return;
 
         FragmentManager mgr = getChildFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack);
@@ -132,6 +138,8 @@ public abstract class BaseSupportFragment extends Fragment implements
     public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
 
+        if (ContextUtils.isContextInvalid(getActivity())) return;
+
         FragmentManager mgr = getChildFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, enterAnim, exitAnim,
                 popEnterAnim, popExitAnim);
@@ -140,6 +148,8 @@ public abstract class BaseSupportFragment extends Fragment implements
     @Nullable
     @Override
     public <F extends Fragment> F findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<F> returnType) {
+
+        if (ContextUtils.isContextInvalid(getActivity())) return null;
 
         FragmentManager mgr = getChildFragmentManager();
         return FragmentUtils.findFragmentByTag(mgr, fragmentTag, returnType);
