@@ -59,4 +59,22 @@ public class ActivityUtils {
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         return am.getMemoryClass();
     }
+
+
+    /**
+     * Generates a unique id for the activity.
+     */
+    public static String generateUniqueId(Activity activity) {
+
+        String strId = "";
+        if (activity != null) {
+            strId = activity.getClass().getSimpleName() + ":";
+        }
+
+        long min = 2000;
+        long max = Long.MAX_VALUE;
+        long id = NumberUtils.generateRandom(min, max);
+
+        return (strId + id);
+    }
 }
