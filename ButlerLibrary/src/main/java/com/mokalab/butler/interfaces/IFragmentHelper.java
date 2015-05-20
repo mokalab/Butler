@@ -36,6 +36,12 @@ public interface IFragmentHelper<T> {
                                 boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim);
 
     /**
+     * Replace Fragment using FragmentManager.
+     */
+    public void replaceFragment(int containerResId, @NotNull T fragment, @Nullable String fragmentTag,
+                                boolean addToBackStack, String backStackName, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim);
+
+    /**
      * Finds fragment by tag and returns the casted type based on the
      * specified type.
      */

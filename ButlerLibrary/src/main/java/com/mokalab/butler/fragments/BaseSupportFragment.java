@@ -1,10 +1,5 @@
 package com.mokalab.butler.fragments;
 
-import android.os.Parcelable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.view.View;
-
 import com.mokalab.butler.interfaces.IBundleArgs;
 import com.mokalab.butler.interfaces.IContextHelper;
 import com.mokalab.butler.interfaces.IFragmentHelper;
@@ -18,6 +13,11 @@ import com.mokalab.butler.util.ViewUtils;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.view.View;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -142,6 +142,18 @@ public abstract class BaseSupportFragment extends Fragment implements
 
         FragmentManager mgr = getChildFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, enterAnim, exitAnim,
+                popEnterAnim, popExitAnim);
+    }
+
+    @Override
+    public void replaceFragment(final int containerResId, @NotNull final Fragment fragment, @Nullable final String fragmentTag, final boolean addToBackStack,
+            final String backStackName,
+            final int enterAnim, final int exitAnim, final int popEnterAnim, final int popExitAnim) {
+
+        if (ContextUtils.isContextInvalid(getActivity())) return;
+
+        FragmentManager mgr = getChildFragmentManager();
+        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, backStackName, enterAnim, exitAnim,
                 popEnterAnim, popExitAnim);
     }
 
