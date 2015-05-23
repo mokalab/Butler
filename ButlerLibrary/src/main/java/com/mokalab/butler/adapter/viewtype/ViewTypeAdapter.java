@@ -65,7 +65,7 @@ public abstract class ViewTypeAdapter extends BaseAdapter {
     /**
      * Construct new ViewTypeAdapter by context and data list.
      */
-    public ViewTypeAdapter(Context context, final ArrayList dataList) {
+    public ViewTypeAdapter(Context context, final List<?> dataList) {
 
         this(context);
         mDataList = dataList;

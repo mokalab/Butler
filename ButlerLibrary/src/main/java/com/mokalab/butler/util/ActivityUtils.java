@@ -7,6 +7,7 @@ import android.content.Context;
 /**
  * This class provides helper/utilities functions related to Activities.
  *
+ * <br/><br/>
  * Created by Pirdad S on 2014-08-13.
  */
 public class ActivityUtils {
@@ -23,6 +24,14 @@ public class ActivityUtils {
         }
 
         return false;
+    }
+
+    /**
+     * Checks if a Context is not null and is not finishing and returns true, otherwise false.
+     */
+    public static boolean isContextInvalid(Activity context) {
+
+        return !isContextValid(context);
     }
 
     /**
@@ -49,5 +58,23 @@ public class ActivityUtils {
 
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         return am.getMemoryClass();
+    }
+
+
+    /**
+     * Generates a unique id for the activity.
+     */
+    public static String generateUniqueId(Activity activity) {
+
+        String strId = "";
+        if (activity != null) {
+            strId = activity.getClass().getSimpleName() + ":";
+        }
+
+        long min = 2000;
+        long max = Long.MAX_VALUE;
+        long id = NumberUtils.generateRandom(min, max);
+
+        return (strId + id);
     }
 }

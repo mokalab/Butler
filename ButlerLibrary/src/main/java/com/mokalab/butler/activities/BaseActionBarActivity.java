@@ -1,20 +1,12 @@
 package com.mokalab.butler.activities;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Parcelable;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.view.View;
-
-import com.mokalab.butler.fragments.BaseFragment;
 import com.mokalab.butler.interfaces.IBundleArgs;
 import com.mokalab.butler.interfaces.IContextHelper;
 import com.mokalab.butler.interfaces.IFragmentHelper;
 import com.mokalab.butler.interfaces.IMrLogger;
 import com.mokalab.butler.interfaces.IViewHelper;
-import com.mokalab.butler.util.ActivityUtils;
 import com.mokalab.butler.util.BundleArgs;
+import com.mokalab.butler.util.ContextUtils;
 import com.mokalab.butler.util.FragmentUtils;
 import com.mokalab.butler.util.MrLogger;
 import com.mokalab.butler.util.ViewUtils;
@@ -22,14 +14,27 @@ import com.mokalab.butler.util.ViewUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
+import android.view.View;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by Pirdad S on 2014-07-22.
+ * TODO: JAVA DOC
+ *
  */
-public abstract class BaseFragmentActivity extends FragmentActivity implements IBundleArgs, IFragmentHelper, IViewHelper,
-        IMrLogger, IContextHelper {
+public abstract class BaseActionBarActivity extends ActionBarActivity implements
+        IBundleArgs,
+        IFragmentHelper<Fragment>,
+        IViewHelper,
+        IMrLogger,
+        IContextHelper {
 
     /* ================== */
     /* ====== IBundleArgs */
@@ -114,34 +119,54 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
 
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag) {
+    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag) {
+
+        if (ContextUtils.isContextInvalid(this)) return;
 
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag);
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
                                 int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        if (ContextUtils.isContextInvalid(this)) return;
 
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, enterAnim, exitAnim, popEnterAnim, popExitAnim);
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack) {
+
+        if (ContextUtils.isContextInvalid(this)) return;
 
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack);
     }
 
     @Override
-    public void replaceFragment(int containerResId, @NotNull BaseFragment fragment, @Nullable String fragmentTag,
+    public void replaceFragment(int containerResId, @NotNull Fragment fragment, @Nullable String fragmentTag,
                                 boolean addToBackStack, int enterAnim, int exitAnim, int popEnterAnim, int popExitAnim) {
+
+        if (ContextUtils.isContextInvalid(this)) return;
 
         FragmentManager mgr = getSupportFragmentManager();
         FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, enterAnim, exitAnim,
+                popEnterAnim, popExitAnim);
+    }
+
+    @Override
+    public void replaceFragment(final int containerResId, @NotNull final Fragment fragment, @Nullable final String fragmentTag, final boolean addToBackStack,
+            final String backStackName,
+            final int enterAnim, final int exitAnim, final int popEnterAnim, final int popExitAnim) {
+
+        if (ContextUtils.isContextInvalid(this)) return;
+
+        FragmentManager mgr = getSupportFragmentManager();
+        FragmentUtils.replaceFragment(mgr, containerResId, fragment, fragmentTag, addToBackStack, backStackName, enterAnim, exitAnim,
                 popEnterAnim, popExitAnim);
     }
 
@@ -152,7 +177,9 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
      */
     @Nullable
     @Override
-    public <T extends BaseFragment> T findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<T> returnType) {
+    public <T extends Fragment> T findFragmentByTag(@NotNull String fragmentTag, @NotNull Class<T> returnType) {
+
+        if (ContextUtils.isContextInvalid(this)) return null;
 
         FragmentManager mgr = getSupportFragmentManager();
         return FragmentUtils.findFragmentByTag(mgr, fragmentTag, returnType);
@@ -184,7 +211,10 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
     @Override
     public String getLogTag() {
 
-        return getClass().getSimpleName();
+        /*
+         * CAN'T DO getClass() due to http://stackoverflow.com/a/18506329 bug in Android Studio
+         */
+        return ((Object) this).getClass().getSimpleName();
     }
 
     @Override
@@ -216,6 +246,12 @@ public abstract class BaseFragmentActivity extends FragmentActivity implements I
     @Override
     public boolean isContextValid() {
 
-        return ActivityUtils.isContextValid(this);
+        return ContextUtils.isContextValid(this);
+    }
+
+    @Override
+    public boolean isContextInvalid() {
+
+        return ContextUtils.isContextInvalid(this);
     }
 }

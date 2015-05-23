@@ -311,6 +311,35 @@ public class JsonUtils {
     }
 
     /**
+     * Parses a Boolean Object from JSONObject if it is cast-able. Ex. can cast an String value to a Boolean.
+     */
+    public static boolean parseToBoolean(JSONObject object, String keyToParse, boolean defaultBool) {
+
+        return parseToBoolean(object, keyToParse, defaultBool, "", false);
+    }
+
+
+    /**
+     * Parses a Boolean Object from JSONObject if it is cast-able. Ex. can cast an String value to a Boolean.
+     */
+    public static boolean parseToBoolean(JSONObject object, String keyToParse, boolean defaultBool, String debugTag,
+                                   boolean shouldLogInfo) {
+
+        Object value = parseFromJsonObject(object, keyToParse, debugTag, shouldLogInfo);
+
+        if (value != null && !value.toString().equalsIgnoreCase("null")) {
+            try {
+                return Boolean.parseBoolean(String.valueOf(value.toString()));
+            } catch (ClassCastException e) {
+                logInfo(debugTag, shouldLogInfo, "The parsed Object is not of type Boolean. It's of type " + value.getClass()
+                        .getSimpleName() + "!");
+            }
+        }
+
+        return defaultBool;
+    }
+
+    /**
      * Finds a JSONArray based on the provided key and parses it to an ArrayList of String.
      */
     public static ArrayList<String> parseToStringArrayList(JSONObject object, String keyToParse) {

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Build;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -317,8 +318,10 @@ public class FragmentUtils {
 
         FragmentTransaction tr = fragmentManager.beginTransaction();
 
-        if (enterAnim > 0 || exitAnim > 0) {
-            tr.setCustomAnimations(enterAnim, exitAnim, popEnterAnim, popExitAnim);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
+            if (enterAnim > 0 || exitAnim > 0) {
+                tr.setCustomAnimations(enterAnim, exitAnim, popEnterAnim, popExitAnim);
+            }
         }
 
         if (fragmentTag == null) {
@@ -342,5 +345,39 @@ public class FragmentUtils {
     public static void hideSoftKeyboard(Activity activity) {
 
         ViewUtils.hideSoftKeyboard(activity);
+    }
+
+    /**
+     * Generates a unique id for the fragment.
+     */
+    public static String generateUniqueId(Fragment fragment) {
+
+        String strId = "";
+        if (fragment != null) {
+            strId = fragment.getClass().getSimpleName() + ":";
+        }
+
+        long min = 2000;
+        long max = Long.MAX_VALUE;
+        long id = NumberUtils.generateRandom(min, max);
+
+        return (strId + id);
+    }
+
+    /**
+     * Generates a unique id for the fragment.
+     */
+    public static String generateUniqueId(android.support.v4.app.Fragment fragment) {
+
+        String strId = "";
+        if (fragment != null) {
+            strId = fragment.getClass().getSimpleName() + ":";
+        }
+
+        long min = 2000;
+        long max = Long.MAX_VALUE;
+        long id = NumberUtils.generateRandom(min, max);
+
+        return (strId + id);
     }
 }
